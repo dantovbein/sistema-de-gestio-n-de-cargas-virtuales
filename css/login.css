@@ -1,0 +1,12 @@
+#login { width: 250px; min-height: 180px; padding: 15px 20px 0 20px; border-radius:7px; border: solid 1px #C4C4C4; background-color: #ffffff; display: inline-block; position: absolute; top: 50px; left: 0; right: 0; margin: auto; border-top: solid 4px #cecece; border-bottom: solid 4px #cecece; }
+#login #container-logo { width: 100%; display: inline-block; text-align: center; margin: 0 0 20px 0; }
+#login form h1 { padding: 0; margin: 0 0 16px 0; font-size: 12pt; text-align: center; }
+#login ul, #login li { display: inline-block; }
+#login li { margin-bottom: 14px; }
+#login li:last-child { margin-bottom: 0; }
+#login label, #login input { display: inline-block; width: 245px; }
+#login label { font-size: 9pt; margin-bottom: 7px; }
+#login input { width: 230px; height: 38px; padding: 0 10px; border-radius: 5px; border:solid 1px #C4C4C4; font-size: 11pt; }
+#login .error-message { font-size: 9pt; text-align: center; display: inline-block; width: 100%; font-weight: bold; padding: 10px 0; color: #FF4040; }
+#login .btn-login { width: 100%; display: inline-block; background-color: #004056; color: #ffffff; text-align: center; font-size: 10pt; padding:8px 0; border-radius: 5px; margin: 20px 0 0 0;  }
+#login .btn-login:hover { background-color: #089FBF; }
