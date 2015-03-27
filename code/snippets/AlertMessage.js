@@ -8,7 +8,7 @@ AlertMessage.prototype.constructor = AlertMessage;
 
 AlertMessage.prototype.initializeParameters = function(){
 	GenericSnippet.prototype.initializeParameters.call(this);
-	this.path = "views/alertMessage.html";
+	this.path = "snippets/alertMessage.html";
 	this.dataSnippet = [ this.config.message ];
 }
 
@@ -19,7 +19,7 @@ AlertMessage.prototype.initialize = function() {
 		top:$(window).height() / 2 - $(this.node).outerHeight() / 2
 	});
 
-	this.addHandlers();
+	//this.addHandlers();
 }
 
 AlertMessage.prototype.addHandlers = function() {
@@ -28,5 +28,6 @@ AlertMessage.prototype.addHandlers = function() {
 }
 
 AlertMessage.prototype.onClickHandler = function(e){
-	$(e.data.context.node).trigger( { type:"onMessageHandler" , value:$(this).data("value") } );
+	//$(e.data.context.node).trigger( { type: Globals.ON_ALERT_MESSAGE_HANDLER , value:$(this).data("value") } );
+	$(e.data.context).trigger( { type:Globals.ON_ALERT_MESSAGE_HANDLER , value:$(this).data("value") } );
 }

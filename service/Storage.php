@@ -4,14 +4,14 @@ class Storage {
 	public $host = "localhost";	
 	public $server = "root";
 	public $password = "";
-	public $dataBase = "quiniela";
+	public $dataBase = "sistema_de_gestion_de_cargas_virtuales";
 	
-	/*
-	public $host = "192.186.248.103";
+	
+	/*public $host = "192.186.248.103";
 	public $server = "yoviajoriveras";
 	public $password = "Lucho1974";
-	public $dataBase = "quiniela";
-	*/
+	public $dataBase = "sistema_de_gestion_de_cargas_virtuales";*/
+	
 
 	private $sql;
 
@@ -33,24 +33,90 @@ class Storage {
 		$userName = $data['userName'];
 		$userPassword = $data['userPassword'];
 		
-		$query = 'SELECT * FROM admin WHERE user_name="' . $userName . '"';
+		$query = 'SELECT * FROM admin WHERE ADMIN_USER_NAME="' . $userName . '"';
 		$result = mysql_query($query);
 		$row = mysql_fetch_assoc($result);
 
-		if($data['userName'] != $row['user_name']) {
+		if($data['userName'] != $row['ADMIN_USER_NAME']) {
 			echo "Usuario inexistente";
-		} else if($data['userPassword'] != $row['user_password']) {
+		} else if($data['userPassword'] != $row['ADMIN_USER_PASSWORD']) {
 			echo "Clave incorrecta";
 		} else {
-			$_SESSION['userid'] = $row['user_id'];
-			$_SESSION['userName'] = $row['user_name'];
-			$_SESSION['userPassword'] = $row['user_password'];
+			$_SESSION['userid'] = $row['ADMIN_USER_ID'];
+			$_SESSION['userName'] = $row['ADMIN_USER_NAME'];
+			$_SESSION['userPassword'] = $row['ADMIN_USER_PASSWORD'];
 			echo 1;
 		}
 		$this->close();		
 	}
 
-	public function getBetsData(){
+	public function checkFileInCurrentDay($data){
+		$this->connect();
+		$query = 'SELECT * FROM archivos_subidos WHERE ARCHIVO_FECHA_CREACION="' . $data['fileDate'] . '"';
+		$result = mysql_query($query) or die('Error en la consulta -> ' .  $query);
+		
+		$data = array();
+		while ($row = mysql_fetch_array($result)) {
+			$obj = new stdClass();
+			$obj->fileId = $row['ARCHIVO_ID'];
+			$obj->fileName = $row['ARCHIVO_NOMBRE'];
+			array_push($data, $obj);
+		}
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function insertUploadedFileInformation($data){
+		$this->connect();
+		$query = 'INSERT INTO archivos_subidos (ARCHIVO_NOMBRE,ARCHIVO_FECHA_CREACION) VALUES ("' . $data['fileName'] . '","' . $data['creationFile'] . '")';
+		mysql_query($query);
+			
+		$data = array(
+			"fileId" =>  mysql_insert_id(),
+			"fileName" => $data['fileName']
+		);
+
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function insertTrx($data){
+		$this->connect();
+		$query = 'INSERT INTO transacciones (ARCHIVO_ID,FECHA,ID_CLIENTE,CLIENTE,ID_USUARIO,USUARIO,ID_PRODUCTO,PRODUCTO,CARTEL,IMPORTE,CANTIDAD_TRXS,TRX_PROMEDIO,ID_TERMINAL,TERMINAL,MODELO_DE_TERMINAL,TIPO_TRX,ESTADO,ID_LOTE,IDENTIFICACION_TERMINAL) VALUES ("' . $data['idArchivo'] . '","' . $data['fecha'] . '","' . $data['idCliente'] . '","' . $data['cliente'] . '","' . $data['idUsuario'] . '","' . $data['usuario'] . '","' . $data['idProducto'] . '","' . $data['producto'] . '","' . $data['carTel'] . '","' . $data['importe'] . '","' . $data['cantTrxs'] . '","' . $data['trxProm'] . '","' . $data['idTerminal'] . '","' . $data['terminal'] . '","' . $data['modeloDeTerminal'] . '","' . $data['tipoTrx'] . '","' . $data['estado'] . '","' . $data['idLote'] . '","' . $data['identifTerminal'] . '")';
+		mysql_query($query);
+		$this->close();
+	}
+
+
+	public function removeDataById($data){
+		$this->connect();
+		$queryFiles = 'DELETE FROM archivos_subidos WHERE ARCHIVO_ID=' . $data['fileId'];
+		mysql_query($queryFiles);
+		$queryTrxs = 'DELETE FROM transacciones WHERE ARCHIVO_ID=' . $data['fileId'];
+		mysql_query($queryTrxs);
+		$this->close();
+	}
+	
+	public function getFiles(){
+		$this->connect();
+		$query = 'SELECT * FROM archivos_subidos ORDER BY ARCHIVO_FECHA_CREACION desc';
+		$result = mysql_query($query);
+
+		$data = array();
+		while ($row = mysql_fetch_array($result)) {
+			$obj = new stdClass();
+			$obj->fileId = $row['ARCHIVO_ID'];
+			$obj->fileName = $row['ARCHIVO_NOMBRE'];
+			$obj->createdFile = $row['ARCHIVO_FECHA_CREACION'];
+			$obj->uploadedFile = $row['ARCHIVO_FECHA_SINCRONIZACION'];
+			array_push($data, $obj);
+		}
+		echo json_encode($data);
+		
+		$this->close();
+	}
+
+	/*public function getBetsData(){
 		$this->connect();
 		$queryBets = 'SELECT bet_id,id_vendor_bis,id_device_bis_vendor,bet_number,bet_position,bet_amount,bet_total_amount,bet_time_created,bet_time_uploaded,bet_time_canceled,vendor_full_name,bet_is_active
 					 FROM bets T1
@@ -354,6 +420,6 @@ class Storage {
 		//$query = "UPDATE devices SET device_is_active=0 WHERE id_device='" . $data['idDevice'] . "'";
 		mysql_query($query) or die('Error en la consulta -> ' .  $query);
 		$this->close();
-	}
+	}*/
 }
 ?>

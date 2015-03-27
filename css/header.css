@@ -1,4 +1,4 @@
-header.main-header { width: 100%; height: 40px; font-size: 13px;  background-color: #004056; color: #fff; position: relative; } 
+header.main-header { width: 100%; height: 40px; font-size: 13px;  background-color: #1F85A8; color: #fff; position: relative; } 
 header ul.user-nav { display: inline-block; float:right; margin: 10px 20px 0 0; }
 header ul.user-nav li { margin: 0 0 0 15px; }
 header ul.user-nav li span { float:left; }

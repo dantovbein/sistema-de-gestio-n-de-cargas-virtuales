@@ -1,0 +1,17 @@
+.files-view { }
+.files-list { display: inline-block; width: 100%; }
+.files-list .item-file { width: 45%; padding: 14px 2%; margin:0 2% 20px 0; font-size: 14px; background-color: #F5F5F5; border-radius: 5px; text-align: center; }
+.files-list .item-file:hover { background-color: #E4E4E4; }
+.files-list .item-file.wide { width: 96%; }
+.files-list .item-file:nth-child(even) { margin-right: 0; }
+.files-list .item-file .excel-icon { width: 100px; height: 100px; float: left; }
+.files-list .item-file .data-file-list { float: left; display: inline-block; width: 66%; padding: 10px 2% 10px 18px; }
+.files-list .item-file.wide .data-file-list { width: 83%; }
+.files-list .item-file .data-file-list .data-file-item { width: 100%; margin: 0 0 5px 0; }
+.files-list .item-file .data-file-list .data-file-item h1,.files-list .item-file .data-file-list .data-file-item span { float: left; display: inline-block; width: 100%; text-align:left; }
+.files-list .item-file .data-file-list .data-file-item h1 {  }
+.files-list .item-file .data-file-list .data-file-item span { }
+.files-list .item-file .item-file-action-nav { }
+.files-list .item-file .item-file-action-nav .item-file-action-list { display: inline-block; float: left; width: 68px; }
+.files-list .item-file .item-file-action-nav .item-file-action-list .item-file-action-item { color:#ffffff; background-color:#A5A5A5; width: 100%; text-align: center; padding: 5px; margin: 0 0 5px 0;  }
+.files-list .item-file .item-file-action-nav .item-file-action-list .item-file-action-item:hover { background-color:#888888; }

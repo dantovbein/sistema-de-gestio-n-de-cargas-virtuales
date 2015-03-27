@@ -14,17 +14,20 @@
 			</div>
 		</li>
 	</ul>
-	<div class="btn btn-upload-file">
+	<!--<div class="btn btn-upload-file">
 		<span>SUBIR ARCHIVO</span>
-	</div>
+	</div>-->
 </header>
 <main>
 	<div id="wrapper">
 		<div class="wrapper-main-nav">
 			<nav class="main-nav">
 				<ul>
-					<li class="btn btn-reports">
-						<span>REPORTES</span>
+					<li class="btn btn-transactions">
+						<span>TRANSACCIONES</span>
+					</li>
+					<li class="btn btn-upload-file">
+						<span>SUBIR ARCHIVO</span>
 					</li>
 					<li class="btn btn-files">
 						<span>ARCHIVOS</span>

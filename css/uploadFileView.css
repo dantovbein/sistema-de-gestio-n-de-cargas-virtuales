@@ -1,0 +1,43 @@
+.upload-file-view { 
+	text-align: center;	
+	padding: 70px 0 0 0;
+}
+.wrapper-file-form {
+	padding: 50px;
+  	/*background-color: rgba(255,255,255,.5);*/
+  	background-color: #F5F5F5;
+  	display: inline-block;
+  	position: relative;
+  	border: solid 1px #EFEFEF;
+  	text-align: center;
+  	border-radius: 10px;
+}
+
+.wrapper-file-form input#file-path, .wrapper-file-form .btn {
+	float: left;
+}
+
+.wrapper-file-form input#file-path {
+	width: 500px;
+	padding: 10px;
+	font-size: 20px;
+}
+
+.wrapper-file-form .btn {
+	color: #ffffff;
+  	background-color: #A5A5A5;
+  	display: inline-block;
+  	text-align: center;
+  	padding: 13px;
+  	margin: 0 0 0 10px;
+}
+
+#input-file-name {
+	width: 608px;
+	height: 47px;
+	background-color: #000000;
+	opacity: 0;
+	position: absolute;
+	cursor: pointer;
+	left: 50px;
+}
