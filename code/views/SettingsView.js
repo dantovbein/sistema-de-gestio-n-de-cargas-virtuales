@@ -10,3 +10,41 @@ SettingsView.prototype.initializeParameters = function() {
 	GenericView.prototype.initializeParameters.call(this);
 	this.path = "views/settingsView.html";
 }
+
+SettingsView.prototype.initialize = function(){
+	GenericView.prototype.initialize.call(this);
+	this.getClients();
+}
+
+SettingsView.prototype.addHandlers = function(){
+	GenericView.prototype.addHandlers.call(this);
+	$(this.node).find(".btn-save-all").click({ context:this },this.onSave );
+}
+
+SettingsView.prototype.getClients = function(){
+	this.itemsClient = [];
+	$.ajax({
+		context : this,
+		async : false,
+		url : "service/manager/getClients.php",
+		success : function(r){
+			var itemClient;
+			JSON.parse(r).forEach(function(d){
+				itemClient = new ItemClient({ container:$(this.node).find(".list-client-settings"),data:d });
+				this.itemsClient.push(itemClient)
+			},this);
+		},
+		error : function(error){
+			debugger;
+		}
+	})
+}
+
+SettingsView.prototype.onSave = function(e) {
+	var self = e.data.context;
+	Monkeyman.isLoading("Guardando");
+	self.itemsClient.forEach(function(item){
+		item.updateData();
+	});
+	Monkeyman.stopLoading();
+}

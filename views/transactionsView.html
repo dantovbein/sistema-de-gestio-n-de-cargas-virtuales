@@ -1,62 +1,24 @@
 <section class="view transactions-view">
-	
-<h1 class="data-filters-title">Filtros de busqueda por Número y rango de fechas:</h1>			
-<form>
-	<ul class="list-form">
-		<li class="item-form">
-			<label>Vendedor:</label>
-			<select id="vendors-list"></select>
-		</li>
-		<li class="item-form">
-			<label>Dispositivo:</label>
-			<select id="devices-list"></select>
-		</li>
-		<li class="item-form">
-			<ul class="list-date-filters">
-				<li class="item-form day">
-					<label>Desde el día (dd/mm/aa):</label>
-					<select id="day-from" class="select-day"></select>
-					<select id="month-from" class="select-month"></select>
-					<select id="year-from" class="select-year"></select>
+	<div class="wrapper-filters"></div>
+	<div class="wrapper-trxs-group">
+		<div class="wrapper-trxs-list"></div>
+		<div class="wrapper-trxs-amount">
+			<h1>TOTAL TRANSACCIONES POR CLIENTES CORRESPONDIENTE AL DÍA 20/03/1985</h1>
+			<ul class="trx-detail-amount">
+				<li class="item-trx-detail-amount">
+					<label>Total tiradas x clientes</label>
+					<span id="total-bets" class="trx-detail-value">00</span>
 				</li>
-				<li class="item-form hour">
-					<label>Horario (hh/mm/ss)</label>
-					<select id="hours-from" class="select-hours"></select>
-					<select id="minutes-from" class="select-minutes"></select>
-					<select id="seconds-from" class="select-seconds"></select>
-				</li>						
-			</ul>
-		</li>
-		<li class="item-form">
-			<ul class="list-date-filters">
-				<li class="item-form day">
-					<label>Hasta el día (dd/mm/aa):</label>
-					<select id="day-to" class="select-day"></select>
-					<select id="month-to" class="select-month"></select>
-					<select id="year-to" class="select-year"></select>
+				<li class="item-trx-detail-amount">
+					<label>Importe total x tiradas</label>
+					<span id="total-bets-amount" class="trx-detail-value">$00000</span>
 				</li>
-				<li class="item-form hour">
-					<label>Horario (hh/mm/ss):</label>
-					<select id="hours-to" class="select-hours"></select>
-					<select id="minutes-to" class="select-minutes"></select>
-					<select id="seconds-to" class="select-seconds"></select>
-				</li>						
+				<li class="item-trx-detail-amount equal-divisor"></li>
+				<li class="item-trx-detail-amount">
+					<label>Total consumido x clientes</label>
+					<span id="total-trxs" class="trx-detail-value">$0000.00</span>
+				</li>
 			</ul>
-		</li>
-		<li class="item-form">
-			<label>Numero:</label>
-			<input id="bet-number" />
-		</li>
-	</ul>					
-</form>
-<nav class="data-filters-confirmation-nav">
-	<ul>
-		<li class="btn btn-search">
-			<span>BUSCAR</span>
-		</li>
-	</ul>
-</nav>
-
-
-
+		</div>
+	</div>
 </section>

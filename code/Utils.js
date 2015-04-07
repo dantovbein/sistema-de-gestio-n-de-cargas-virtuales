@@ -14,23 +14,8 @@ var Utils = {
 		for(var i=0;i<31;i++) { days.push(i+1); }
 		return days;
 	},
-	getMonthId : function(month,type){
-		var arrType = [];
-		switch(type){
-			case "es": 
-				arrType = this.getMonths()[0].es; 
-			break;
-		}
-		var id = -1;
-		arrType.forEach(function(m,i){
-			if(m.toLocaleLowerCase() == month.toLocaleLowerCase()){
-				id = i;
-			}
-		});
-		return id;
-	},
 	getYears : function(){
-		return [2014,2015,2016,2017,2018,2019,2020];
+		return [2015,2016,2017,2018,2019,2020];
 	},
 	getHours : function(){
 		var hours = [];

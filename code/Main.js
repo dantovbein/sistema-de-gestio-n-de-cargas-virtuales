@@ -8,6 +8,7 @@ Main.prototype.constructor = Main;
 Main.prototype.initializeParameters = function() {
 	this.isLogged = false;
 	this.container = $("body");
+	Monkeyman.setMain(this);
 }
 
 Main.prototype.initialize = function() {
@@ -68,31 +69,37 @@ Main.prototype.getMainView = function() {
 
 	$(this.node).find(".btn-logout").click( { context:this },this.onLogout );
 
-	$(this.node).find(".btn-transactions").click( { context:this, view:Globals.TRANSACTIONS_VIEW },this.getView );
-	$(this.node).find(".btn-upload-file").click( { context:this, view:Globals.UPLOAD_FILE_VIEW },this.getView );
-	$(this.node).find(".btn-files").click( { context:this, view:Globals.FILES_VIEW },this.getView );
-	$(this.node).find(".btn-settings").click( { context:this, view:Globals.SETTINGS_VIEW },this.getView );
+	$(this.node).find(".btn-transactions").click( { context:this, view:Globals.TRANSACTIONS_VIEW },function(e){
+		e.data.context.getView(e.data.view);	
+	});
+	$(this.node).find(".btn-upload-file").click( { context:this, view:Globals.UPLOAD_FILE_VIEW },function(e){
+		e.data.context.getView(e.data.view);	
+	});
+	$(this.node).find(".btn-files").click( { context:this, view:Globals.FILES_VIEW },function(e){
+		e.data.context.getView(e.data.view);
+	});
+	$(this.node).find(".btn-settings").click( { context:this, view:Globals.SETTINGS_VIEW },function(e){
+		e.data.context.getView(e.data.view);
+	});
 
+	this.getView(Globals.TRANSACTIONS_VIEW);
 	this.addTopButton();
 }
 
-Main.prototype.getView = function(e) {
-	var self = e.data.context;
-	Utils.removeContent();
-	
-	switch(e.data.view){
+Main.prototype.getView = function(v) {
+	Utils.removeContent();	
+	switch(v){
 		case Globals.TRANSACTIONS_VIEW:
-			var view = new TransactionsView({ container:$(self.node).find("#main-content") });
+			this.view = new TransactionsView({ container:$(this.node).find("#main-content") });
 			break;
 		case Globals.UPLOAD_FILE_VIEW:
-			//var view = new UploadFileView({ container:$(self.node).find("body") });
-			var view = new UploadFileView({ container:$(self.node).find("#main-content") });
+			this.view = new UploadFileView({ container:$(this.node).find("#main-content") });
 			break;
 		case Globals.FILES_VIEW:
-			var view = new FilesView({ container:$(self.node).find("#main-content") });
+			this.view = new FilesView({ container:$(this.node).find("#main-content") });
 			break;
 		case Globals.SETTINGS_VIEW:
-			var view = new SettingsView({ container:$(self.node).find("#main-content") });
+			this.view = new SettingsView({ container:$(this.node).find("#main-content") });
 			break;
 	}
 }

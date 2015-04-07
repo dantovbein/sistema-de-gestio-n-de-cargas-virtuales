@@ -1,21 +1,25 @@
 <?php
-/* Storage : Admin */
 class Storage {
-	public $host = "localhost";	
-	public $server = "root";
+	public $host = "";	
+	public $server = "";
 	public $password = "";
-	public $dataBase = "sistema_de_gestion_de_cargas_virtuales";
-	
-	
-	/*public $host = "192.186.248.103";
-	public $server = "yoviajoriveras";
-	public $password = "Lucho1974";
-	public $dataBase = "sistema_de_gestion_de_cargas_virtuales";*/
-	
-
+	public $dataBase = "";
 	private $sql;
 
-	public function Storage() { }
+	public function Storage() {
+		$debug = true;
+		if($debug) {
+			$this->host = "localhost";	
+			$this->server = "root";
+			$this->password = "";
+			$this->dataBase = "sistema_de_gestion_de_cargas_virtuales";
+		} else {
+			$this->host = "192.186.248.103";	
+			$this->server = "yoviajoriveras";
+			$this->password = "Lucho1974";
+			$this->dataBase = "sistema_de_gestion_de_cargas_virtuales";
+		}
+	}
 
 	private function connect() {
 		$this->sql = mysql_connect($this->host , $this->server , $this->password) or die ('Error al conectarse a sql');
@@ -82,8 +86,9 @@ class Storage {
 
 	public function insertTrx($data){
 		$this->connect();
-		$query = 'INSERT INTO transacciones (ARCHIVO_ID,FECHA,ID_CLIENTE,CLIENTE,ID_USUARIO,USUARIO,ID_PRODUCTO,PRODUCTO,CARTEL,IMPORTE,CANTIDAD_TRXS,TRX_PROMEDIO,ID_TERMINAL,TERMINAL,MODELO_DE_TERMINAL,TIPO_TRX,ESTADO,ID_LOTE,IDENTIFICACION_TERMINAL) VALUES ("' . $data['idArchivo'] . '","' . $data['fecha'] . '","' . $data['idCliente'] . '","' . $data['cliente'] . '","' . $data['idUsuario'] . '","' . $data['usuario'] . '","' . $data['idProducto'] . '","' . $data['producto'] . '","' . $data['carTel'] . '","' . $data['importe'] . '","' . $data['cantTrxs'] . '","' . $data['trxProm'] . '","' . $data['idTerminal'] . '","' . $data['terminal'] . '","' . $data['modeloDeTerminal'] . '","' . $data['tipoTrx'] . '","' . $data['estado'] . '","' . $data['idLote'] . '","' . $data['identifTerminal'] . '")';
+		$query = 'INSERT INTO transacciones (ARCHIVO_ID,FECHA,ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE,ID_USUARIO,USUARIO,ID_PRODUCTO,PRODUCTO,CARTEL,IMPORTE,CANTIDAD_TRXS,TRX_PROMEDIO,ID_TERMINAL,TERMINAL,MODELO_DE_TERMINAL,TIPO_TRX,ESTADO,ID_LOTE,IDENTIFICACION_TERMINAL) VALUES ("' . $data['idArchivo'] . '","' . $data['fecha'] . '","' . $data['idCliente'] . '","' . $data['idCliente'] . '","' . $data['cliente'] . '","' . $data['idUsuario'] . '","' . $data['usuario'] . '","' . $data['idProducto'] . '","' . $data['producto'] . '","' . $data['carTel'] . '","' . $data['importe'] . '","' . $data['cantTrxs'] . '","' . $data['trxProm'] . '","' . $data['idTerminal'] . '","' . $data['terminal'] . '","' . $data['modeloDeTerminal'] . '","' . $data['tipoTrx'] . '","' . $data['estado'] . '","' . $data['idLote'] . '","' . $data['identifTerminal'] . '")';
 		mysql_query($query);
+		$this->insertClient(array( 'idCliente'=>$data["idCliente"], 'cliente'=>$data['cliente'] ));
 		$this->close();
 	}
 
@@ -113,6 +118,230 @@ class Storage {
 		}
 		echo json_encode($data);
 		
+		$this->close();
+	}
+
+	public function insertClient($data){
+		$this->connect();
+		if($this->checkClient($data['idCliente']) == 0){
+			$query = 'INSERT INTO clientes (ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE) VALUES ("' . $data['idCliente'] . '","' . $data['idCliente'] . '","' . $data['cliente']  . '")';
+			mysql_query($query);
+		}
+		$this->close();
+	}
+
+	public function checkClient($idCliente){
+		$this->connect();
+		$query = 'SELECT count(ID_CLIENTE) FROM clientes WHERE ID_CLIENTE=' . $idCliente;
+		$result = mysql_query($query);
+		return mysql_result($result, 0);
+		$this->close();
+	}
+
+	public function updateClient($data){
+		$this->connect();
+		$query = 'UPDATE clientes SET CLIENTE_ZONA="' . $data['clienteZona'] . '",' . 'CLIENTE_COMISION="' . $data['clienteComision'] . '",' . 'CLIENTE_STATUS="' . $data['clienteStatus'] . '"' . ' WHERE ID_CLIENTE="' . $data['idCliente'] . '"' ;
+		mysql_query($query);
+		$this->close();
+	}
+
+	public function getClients(){
+		$this->connect();
+		$query = 'SELECT * FROM clientes';
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->idCliente = $row['ID_CLIENTE'];
+			$obj->cliente = $row['CLIENTE'];
+			$obj->clienteZona = $row['CLIENTE_ZONA'];
+			$obj->clienteComision = $row['CLIENTE_COMISION'];
+			$obj->clienteStatus = $row['CLIENTE_STATUS'];
+			array_push($data,$obj);
+		}
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function getUsers(){
+		$this->connect();
+		$query = 'SELECT DISTINCT ID_USUARIO,USUARIO from transacciones WHERE ID_USUARIO !=0 ORDER BY USUARIO';
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->idUsuario = $row['ID_USUARIO'];
+			$obj->usuario = $row['USUARIO'];
+			array_push($data,$obj);
+		}
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function getProducts(){
+		$this->connect();
+		$query = 'SELECT DISTINCT ID_PRODUCTO,PRODUCTO FROM transacciones ORDER BY ID_PRODUCTO';
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->idProducto = $row['ID_PRODUCTO'];
+			$obj->producto = $row['PRODUCTO'];
+			array_push($data,$obj);
+		}
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function getTerminals(){
+		$this->connect();
+		$query = 'SELECT DISTINCT MODELO_DE_TERMINAL,ID_TERMINAL,TERMINAL FROM transacciones WHERE ID_TERMINAL != 0 ORDER BY MODELO_DE_TERMINAL';
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->idTerminal = $row['ID_TERMINAL'];
+			$obj->terminal = $row['TERMINAL'];
+			$obj->modeloDeTerminal = $row['MODELO_DE_TERMINAL'];
+			array_push($data,$obj);
+		}
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function getTrxsStatus(){
+		$this->connect();
+		$query = 'SELECT DISTINCT ESTADO FROM transacciones ORDER BY ESTADO';
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->estado = $row['ESTADO'];
+			array_push($data,$obj);
+		}
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function getMobileTrxs($data) {
+		$this->connect();
+		$query = 'SELECT T1.ID_TRX,T1.FECHA,T1.ESTADO,T1.ID_CLIENTE,T1.CLIENTE,T1.ID_USUARIO,T1.USUARIO,T1.ID_PRODUCTO,T1.PRODUCTO,T1.CARTEL,T1.IMPORTE,T1.CANTIDAD_TRXS,T1.TRX_PROMEDIO,T1.ID_TERMINAL,T1.TERMINAL,T1.MODELO_DE_TERMINAL,T1.TIPO_TRX,T1.ID_LOTE,T1.IDENTIFICACION_TERMINAL,T2.CLIENTE_ZONA,T2.CLIENTE_COMISION,T2.CLIENTE_STATUS FROM transacciones T1 INNER JOIN clientes T2 ON T1.ID_CLIENTE_BIS = T2.ID_CLIENTE_BIS WHERE ';
+		$query .= 'T1.FECHA="' . $data['fecha'] . '"';
+		$query .= ' AND T1.ESTADO="' . $data['estado'] . '"';
+
+		if($data['idUsuario'] != ""){
+			$query .= ' AND T1.ID_USUARIO="' . $data['idUsuario'] . '"';
+		}
+
+		if($data['idCliente'] != ""){
+			$query .= ' AND T1.ID_CLIENTE="' . $data['idCliente'] . '"';
+		}
+
+		if($data['idProducto'] != ""){
+			$query .= ' AND T1.ID_PRODUCTO="' . $data['idProducto'] . '"';
+		}else{
+			$query .= ' AND T1.ID_PRODUCTO!="' . 24 . '"';
+		}
+
+		if($data['modeloDeTerminal'] != ""){
+			$query .= ' AND T1.MODELO_DE_TERMINAL="' . $data['modeloDeTerminal'] . '"';
+		}
+
+		if($data['clienteZona'] != ""){
+			$query .= ' AND T2.CLIENTE_ZONA="' . $data['clienteZona'] . '"';
+		}
+
+		$query .= ' ORDER BY T1.ID_CLIENTE';
+		
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->idTrx = $row['ID_TRX'];
+			$obj->fecha = $row['FECHA'];
+			$obj->estado = $row['ESTADO'];
+			$obj->idCliente = $row['ID_CLIENTE'];
+			$obj->cliente = $row['CLIENTE'];
+			$obj->clienteComision = $row['CLIENTE_COMISION'];
+			$obj->clienteZona = $row['CLIENTE_ZONA'];
+			$obj->clienteStatus = $row['CLIENTE_STATUS'];
+			$obj->idUsuario = $row['ID_USUARIO'];
+			$obj->usuario = $row['USUARIO'];
+			$obj->idProducto = $row['ID_PRODUCTO'];
+			$obj->producto = $row['PRODUCTO'];
+			$obj->carTel = $row['CARTEL'];
+			$obj->importe = $row['IMPORTE'];
+			$obj->cantidadTrxs = $row['CANTIDAD_TRXS'];
+			$obj->trxPromedio = $row['TRX_PROMEDIO'];
+			$obj->idTerminal = $row['ID_TERMINAL'];
+			$obj->terminal = $row['TERMINAL'];
+			$obj->modeloDeTerminal = $row['MODELO_DE_TERMINAL'];
+			$obj->tipoTrx = $row['TIPO_TRX'];
+			$obj->idLote = $row['ID_LOTE'];
+			$obj->identifTerminal = $row['IDENTIFICACION_TERMINAL'];
+			array_push($data,$obj);
+		}
+		echo json_encode($data);
+		$this->close();
+	}
+
+	public function getTvTrxs($data) {
+		$this->connect();
+		$query = 'SELECT T1.ID_TRX,T1.FECHA,T1.ESTADO,T1.ID_CLIENTE,T1.CLIENTE,T1.ID_USUARIO,T1.USUARIO,T1.ID_PRODUCTO,T1.PRODUCTO,T1.CARTEL,T1.IMPORTE,T1.CANTIDAD_TRXS,T1.TRX_PROMEDIO,T1.ID_TERMINAL,T1.TERMINAL,T1.MODELO_DE_TERMINAL,T1.TIPO_TRX,T1.ID_LOTE,T1.IDENTIFICACION_TERMINAL,T2.CLIENTE_ZONA,T2.CLIENTE_COMISION,T2.CLIENTE_STATUS FROM transacciones T1 INNER JOIN clientes T2 ON T1.ID_CLIENTE_BIS = T2.ID_CLIENTE_BIS WHERE ';
+		$query .= 'T1.FECHA="' . $data['fecha'] . '"';
+		$query .= ' AND T1.ESTADO="' . $data['estado'] . '"';
+
+		if($data['idUsuario'] != ""){
+			$query .= ' AND T1.ID_USUARIO="' . $data['idUsuario'] . '"';
+		}
+
+		if($data['idCliente'] != ""){
+			$query .= ' AND T1.ID_CLIENTE="' . $data['idCliente'] . '"';
+		}
+
+		if($data['idProducto'] != ""){
+			$query .= ' AND T1.ID_PRODUCTO="' . $data['idProducto'] . '"';
+		}
+
+		if($data['modeloDeTerminal'] != ""){
+			$query .= ' AND T1.MODELO_DE_TERMINAL="' . $data['modeloDeTerminal'] . '"';
+		}
+
+		if($data['clienteZona'] != ""){
+			$query .= ' AND T2.CLIENTE_ZONA="' . $data['clienteZona'] . '"';
+		}
+
+		$query .= ' ORDER BY T1.ID_CLIENTE';
+		
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->idTrx = $row['ID_TRX'];
+			$obj->fecha = $row['FECHA'];
+			$obj->estado = $row['ESTADO'];
+			$obj->idCliente = $row['ID_CLIENTE'];
+			$obj->cliente = $row['CLIENTE'];
+			$obj->clienteComision = $row['CLIENTE_COMISION'];
+			$obj->clienteZona = $row['CLIENTE_ZONA'];
+			$obj->clienteStatus = $row['CLIENTE_STATUS'];
+			$obj->idUsuario = $row['ID_USUARIO'];
+			$obj->usuario = $row['USUARIO'];
+			$obj->idProducto = $row['ID_PRODUCTO'];
+			$obj->producto = $row['PRODUCTO'];
+			$obj->carTel = $row['CARTEL'];
+			$obj->importe = $row['IMPORTE'];
+			$obj->cantidadTrxs = $row['CANTIDAD_TRXS'];
+			$obj->trxPromedio = $row['TRX_PROMEDIO'];
+			$obj->idTerminal = $row['ID_TERMINAL'];
+			$obj->terminal = $row['TERMINAL'];
+			$obj->modeloDeTerminal = $row['MODELO_DE_TERMINAL'];
+			$obj->tipoTrx = $row['TIPO_TRX'];
+			$obj->idLote = $row['ID_LOTE'];
+			$obj->identifTerminal = $row['IDENTIFICACION_TERMINAL'];
+			array_push($data,$obj);
+		}
+		echo json_encode($data);
 		$this->close();
 	}
 

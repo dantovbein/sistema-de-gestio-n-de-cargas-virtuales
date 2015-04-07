@@ -28,9 +28,6 @@ UploadFileView.prototype.onClickUploadFile = function(e){
     if($(self.node).find('#input-file-name').prop('files').length == 0){
         return false;
     }
-
-
-    //$(self.node).find("#file-path").val($(self.node).find('#input-file-name').prop('files')[0].name);
     
     Monkeyman.isLoading();
 
@@ -89,9 +86,8 @@ UploadFileView.prototype.onAlertMessageHandler = function(e){
         // overwrite data
         Monkeyman.isLoading();
         e.data.context.removeFile(e.data.context.overwrittenFileName);
-        //e.data.context.removeDataById(e.data.context.fileId);
     }else{
-        // cancel
+        // cancel overwrite data
         e.data.context.resetForm();
     }
     Monkeyman.removeOverlay();
@@ -99,7 +95,6 @@ UploadFileView.prototype.onAlertMessageHandler = function(e){
 }
 
 UploadFileView.prototype.removeFile = function(fileName){
-    debugger;
     $.ajax({
         context : this,
         url : 'service/manager/removeFile.php',
@@ -133,7 +128,6 @@ UploadFileView.prototype.removeDataById = function(fileId){
 }
 
 UploadFileView.prototype.uploadFile = function(){
-    debugger;
     var fileData = $(this.node).find('#input-file-name').prop('files')[0];
     var formData = new FormData();                  
     formData.append('file', fileData);
@@ -214,6 +208,7 @@ UploadFileView.prototype.parseTrxsData = function(d) {
 
 // Subo la informacion de cada transaccion
 UploadFileView.prototype.insertTrx = function(data){
+    debugger;
     $.ajax({
         context : this,
         async : false,
@@ -228,9 +223,9 @@ UploadFileView.prototype.insertTrx = function(data){
             idProducto : data.F,
             producto : data.G,
             carTel : data.H,
-            importe : data.I,
+            importe : data.I.slice(1).replace(',','.'),
             cantTrxs : data.J,
-            trxProm : data.K,
+            trxProm : data.K.slice(1).replace(',','.'),
             idTerminal : data.L,
             terminal : data.M,
             modeloDeTerminal : data.N,

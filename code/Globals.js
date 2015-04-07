@@ -4,5 +4,9 @@ var Globals = {
 	UPLOAD_FILE_VIEW : "uploadFileView",
 	FILES_VIEW : "filesView",
 	SETTINGS_VIEW : "settingsView",
-	ON_ALERT_MESSAGE_HANDLER : "onAlertMessageHandler"
+	ON_ALERT_MESSAGE_HANDLER : "onAlertMessageHandler",
+	REFRESH_DATA : "refreshData",
+	SHOW_DATA_BY_FILTERS : "showDataByFilters",
+	RELOAD_DATA : "reloadData",
+	MESSAGE_NO_RESULT : "No se encontro ningún resultado"
 };

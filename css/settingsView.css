@@ -1,0 +1,58 @@
+.settings-view {
+	width: 1000px;
+}
+
+.client-settings {
+	width: 100%;
+}
+
+.client-settings h1 {
+	text-align: center;
+}
+
+.list-client-settings {
+	width: 100%;
+	display: inline-block;
+}
+
+.item-client-settings {
+	width: 100%;
+	margin: 0 0 15px 0;
+	display: inline-block;
+}
+
+
+.item-client-settings .wrapper-client-name {
+	width: 30%;
+	float: left;
+	text-align: right;
+}
+
+.item-client-settings .wrapper-comision-amount {
+	width: 20%;
+	float: left;
+}
+
+.item-client-settings .wrapper-client-zone {
+	width: 20%;
+	float: left;
+}
+
+.item-client-settings .wrapper-client-nav {
+	width: 30%;
+	float: left;
+}
+
+.item-client-settings .wrapper-comision-amount .currency-symbol {
+	float: left;
+}
+
+.item-client-settings .wrapper-comision-amount .comision-amount {
+	float: left;
+	width: 90%;
+	padding: 10px 0;
+}
+
+.btn-save-all {
+	background-color: #27ae60;
+}
