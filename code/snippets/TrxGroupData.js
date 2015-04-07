@@ -1,20 +1,27 @@
 function TrxGroupData(config) {
-	GenericSnippet.call(this,config);
+	this.tiradas = Number(config.data.length);
+	this.clienteComision = Number(config.data[0].clienteComision);
+	this.totalImporteComision = Number(this.clienteComision * this.tiradas);
+	this.totalTrxs = 0;
+	config.data.forEach(function(t){
+		this.totalTrxs += Number(t.importe);
+	},this);
+	Number(this.totalTrxs);
+	GenericSnippet.call(this,config);	
 } 
 
 inheritPrototype(TrxGroupData,GenericSnippet);
 
 TrxGroupData.prototype.constructor = TrxGroupData;
 
-TrxGroupData.prototype.initializeParameters = function() {
-	var tiradas = this.config.data.length;
-	var clienteComision = parseFloat(this.config.data[0].clienteComision);
-	var totalImporteComision = clienteComision * tiradas;
-	this.totalTrxs = 0;
-	this.config.data.forEach(function(t){
-		this.totalTrxs += parseFloat(t.importe);
-	},this);
-	this.dataSnippet = [this.totalTrxs.toFixed(2),tiradas,clienteComision.toFixed(2),totalImporteComision.toFixed(2),parseFloat(this.totalTrxs + totalImporteComision).toFixed(2) ];
+TrxGroupData.prototype.initializeParameters = function() {	
+	this.dataSnippet = [ 	
+							this.totalTrxs.toFixed(2),
+						 	this.tiradas,
+						 	this.clienteComision.toFixed(2),
+						 	this.totalImporteComision.toFixed(2),
+						 	(this.totalTrxs + this.totalImporteComision).toFixed(2)
+						];
 	GenericSnippet.prototype.initializeParameters.call(this);
 	this.path = "snippets/trxGroupData.html";
 }

@@ -43,10 +43,18 @@ TransactionsView.prototype.showDataByFilters = function(data) {
 		$(this.node).find(".wrapper-trxs-list").append('<li class="message-no-result">'+Globals.MESSAGE_NO_RESULT+'</li>');
 		$(this.node).find(".wrapper-trxs-amount").css({ display:"none"});
 	}else{
+		this.totalClientsBetAmount = 0;
+		this.totalClientsTiradasAmount = 0;		
 		this.trxs.forEach(function(g){
 			var trxGroupData = new TrxGroupData( { container:$(this.node).find(".wrapper-trxs-list"),data:g } );
+			this.totalClientsBetAmount += trxGroupData.totalTrxs;
+			this.totalClientsTiradasAmount += trxGroupData.totalImporteComision;
 		},this);
-		$(this.node).find(".wrapper-trxs-amount").css({ display:"block"});
+		this.totalClientsTrxAmount = this.totalClientsBetAmount + this.totalClientsTiradasAmount;
+		$(this.node).find(".wrapper-trxs-amount").find(".total-clients-bet-amount").html("$"+this.totalClientsBetAmount.toFixed(2));
+		$(this.node).find(".wrapper-trxs-amount").find(".total-clients-tiradas-amount").html("$"+this.totalClientsTiradasAmount.toFixed(2));
+		$(this.node).find(".wrapper-trxs-amount").find(".total-clients-trx-amount").html("$"+this.totalClientsTrxAmount.toFixed(2));
+		$(this.node).find(".wrapper-trxs-amount").css({ display:"inline-block"});
 	}
 }
 

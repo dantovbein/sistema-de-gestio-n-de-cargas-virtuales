@@ -282,6 +282,7 @@
 .wrapper-trxs-amount {
 	display: none;
 	width: 100%;
+	padding-bottom: 20px 0 30px 0;
 }
 
 .wrapper-trxs-amount h1 {
@@ -297,4 +298,8 @@
 	padding-top: 20px;
 	float: none;
   	margin: 0 auto;
+}
+
+.total-clients-trx-amount {
+	font-size: 21px;
 }
