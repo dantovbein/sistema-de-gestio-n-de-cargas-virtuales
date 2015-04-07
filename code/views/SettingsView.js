@@ -18,7 +18,7 @@ SettingsView.prototype.initialize = function(){
 
 SettingsView.prototype.addHandlers = function(){
 	GenericView.prototype.addHandlers.call(this);
-	$(this.node).find(".btn-save-all").click({ context:this },this.onSave );
+	$(this.node).find(".btn-save-clients").click({ context:this },this.onSaveClients );
 }
 
 SettingsView.prototype.getClients = function(){
@@ -40,9 +40,9 @@ SettingsView.prototype.getClients = function(){
 	})
 }
 
-SettingsView.prototype.onSave = function(e) {
+SettingsView.prototype.onSaveClients = function(e) {
 	var self = e.data.context;
-	Monkeyman.isLoading("Guardando");
+	Monkeyman.isLoading("Guardando clientes");
 	self.itemsClient.forEach(function(item){
 		item.updateData();
 	});

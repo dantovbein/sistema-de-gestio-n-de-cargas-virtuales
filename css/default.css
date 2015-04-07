@@ -50,6 +50,8 @@ a { text-decoration: none; color:#ffffff; }
   	padding: 5px;
   	margin: 0 0 5px 0;	
   	float: left;
+  	 border-radius: 5px;
+
 }
 
 .default-button span {
@@ -72,6 +74,15 @@ a { text-decoration: none; color:#ffffff; }
 
 .default-button.disabled:hover {
 	background-color: #A5A5A5;
+}
+
+.btn-save {
+	background-color: #27ae60;
+	font-size: 15px;
+	padding: 10px; 
+}
+.btn-save:hover{
+	background-color: #0E9045;
 }
 
 .message-no-result {
