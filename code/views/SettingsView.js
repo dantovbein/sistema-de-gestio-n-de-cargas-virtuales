@@ -28,6 +28,7 @@ SettingsView.prototype.getClients = function(){
 		async : false,
 		url : "service/manager/getClients.php",
 		success : function(r){
+			debugger;
 			var itemClient;
 			JSON.parse(r).forEach(function(d){
 				itemClient = new ItemClient({ container:$(this.node).find(".list-client-settings"),data:d });

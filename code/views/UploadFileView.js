@@ -64,10 +64,12 @@ UploadFileView.prototype.checkFileInCurrentDay = function(fileDate){
         type : "POST",
         data : { fileDate : fileDate },
         success : function(r){
+            debugger;
             fileInformation = JSON.parse(r);
         },
         error : function(error){
-            alert(error);
+            debugger;
+            //alert(error);
         }
     });
     return fileInformation;
@@ -122,7 +124,8 @@ UploadFileView.prototype.removeDataById = function(fileId){
             this.uploadFile();
         },
         error : function(error){
-            alert(error);
+            debugger;
+            //alert(error);
         }
     });
 }
@@ -167,7 +170,8 @@ UploadFileView.prototype.insertUploadedFileInformation = function(d){
             this.getExcelData(result.fileName);
         },
         error : function(error){
-            alert(error);
+           debugger;
+           //alert(error);
         }
     });
 }
@@ -180,11 +184,15 @@ UploadFileView.prototype.getExcelData = function(fileName){
         type : "POST",
         data : { fileName : fileName },
         success : function(r){
-            debugger;
-            this.parseTrxsData(JSON.parse(r))
+           // debugger;
+           // this.parseTrxsData(JSON.parse(r));
+           //this.insertTrxs(JSON.parse(r));
+           this.insertTrxs(r);
+
         },
         error : function(error){
-           alert(error);
+           //alert(error);
+           debugger;
         }
     })   
 }
@@ -193,22 +201,25 @@ UploadFileView.prototype.getExcelData = function(fileName){
 */
 
 UploadFileView.prototype.parseTrxsData = function(d) {
-    var data = [];
+    this.trxData = [];
     for (i in d) {
-        data.push(d[i]);
+        this.trxData.push(d[i]);
     }
-    
-    data.forEach(function(_data,_index){
+
+    this.trxIndex = 3;
+    this.insertTrx();
+
+    /*this.trxData.forEach(function(_data,_index){
         // Los primeros 3 objetos corresponden a titulos del excel
         if(_index >= 3){
             this.insertTrx(_data);
         }
-    },this);
+    },this);*/
+    //Monkeyman.stopLoading();
 }
 
 // Subo la informacion de cada transaccion
-UploadFileView.prototype.insertTrx = function(data){
-    debugger;
+/*UploadFileView.prototype.insertTrx = function(data){
     $.ajax({
         context : this,
         async : false,
@@ -236,10 +247,90 @@ UploadFileView.prototype.insertTrx = function(data){
         },
         url : "service/manager/insertTrx.php",
         success : function(r){
-           this.resetForm();
+            console.log("success insertTrx");
+            debugger;
+           //this.resetForm();
         },
         error : function(error){
-            alert(error);
+            console.log("success error");
+            debugger;
+            //alert(error);
+        }
+    });
+}*/
+
+UploadFileView.prototype.insertTrx = function(){
+    if(this.trxData[this.trxIndex] != undefined) {
+        var data = this.trxData[this.trxIndex];    
+    }else{
+        this.resetForm();
+        Monkeyman.stopLoading();
+        return false;
+    }
+    
+    $.ajax({
+        context : this,
+        async : false,
+        type : "POST",
+        data : {
+            idArchivo : this.fileId,
+            fecha : data.A,
+            idCliente : data.B,
+            cliente : data.C,
+            idUsuario : data.D,
+            usuario : data.E,
+            idProducto : data.F,
+            producto : data.G,
+            carTel : data.H,
+            importe : data.I.slice(1).replace(',','.'),
+            cantTrxs : data.J,
+            trxProm : data.K.slice(1).replace(',','.'),
+            idTerminal : data.L,
+            terminal : data.M,
+            modeloDeTerminal : data.N,
+            tipoTrx : data.O,
+            estado : data.P,
+            idLote : data.Q,
+            identifTerminal : data.R
+        },
+        url : "service/manager/insertTrx.php",
+        success : function(r){
+            console.log("success insertTrx");
+            this.trxIndex++;
+            setTimeout(function(d){
+                d.context.insertTrx();
+            },1000,{ context:this });
+        },
+        error : function(error){
+            console.log("success error");
+            alert("Error al subir la transaccion");
+            this.resetForm();
+            Monkeyman.stopLoading();
+        }
+    });
+}
+
+UploadFileView.prototype.insertTrxs = function(trxs){
+    debugger;
+    $.ajax({
+        context : this,
+        async : false,
+        type : "POST",
+        //data : { trxs : JSON.stringify(trxs) },
+        data : { trxs : trxs, fileId : this.fileId },
+        url : "service/manager/insertTrxs.php",
+        success : function(r){
+            debugger;
+            console.log("success insertTrxs");
+            this.resetForm();
+            Monkeyman.stopLoading();
+        },
+        error : function(error){
+            debugger;
+            console.log("error insertTrxs");
+            alert("Error al subir las transacciones");
+            this.resetForm();
+            Monkeyman.stopLoading();
         }
     });
 }
@@ -247,7 +338,7 @@ UploadFileView.prototype.insertTrx = function(data){
 UploadFileView.prototype.resetForm = function(){
     $(this.node).find('#input-file-name').val("");
     $(this.node).find("#file-path").val("");
-    Monkeyman.stopLoading()
+    //Monkeyman.stopLoading()
 }
 
  

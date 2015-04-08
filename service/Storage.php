@@ -7,7 +7,7 @@ class Storage {
 	private $sql;
 
 	public function Storage() {
-		$debug = true;
+		$debug = !true;
 		if($debug) {
 			$this->host = "localhost";	
 			$this->server = "root";
@@ -92,6 +92,76 @@ class Storage {
 		$this->close();
 	}
 
+	public function insertTrxs($data){
+		$this->connect();
+		//echo $data['trxs'];
+		$trxs = json_decode($data['trxs'],true);
+		//$fileId = $data['fileId'];
+		//print($trxs);
+		//$trxs = $data['trxs'];
+		//echo count($trxs);
+		//echo count($trxs);
+		//var_dump($trxs);
+		//var_dump();
+		//echo count($trxs);
+		//echo count(var_dump($trxs));
+
+	
+
+
+		//$query = 'INSERT INTO transacciones (ARCHIVO_ID,FECHA,ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE,ID_USUARIO,USUARIO,ID_PRODUCTO,PRODUCTO,CARTEL,IMPORTE,CANTIDAD_TRXS,TRX_PROMEDIO,ID_TERMINAL,TERMINAL,MODELO_DE_TERMINAL,TIPO_TRX,ESTADO,ID_LOTE,IDENTIFICACION_TERMINAL) VALUES ("' . $data['idArchivo'] . '","' . $data['fecha'] . '","' . $data['idCliente'] . '","' . $data['idCliente'] . '","' . $data['cliente'] . '","' . $data['idUsuario'] . '","' . $data['usuario'] . '","' . $data['idProducto'] . '","' . $data['producto'] . '","' . $data['carTel'] . '","' . $data['importe'] . '","' . $data['cantTrxs'] . '","' . $data['trxProm'] . '","' . $data['idTerminal'] . '","' . $data['terminal'] . '","' . $data['modeloDeTerminal'] . '","' . $data['tipoTrx'] . '","' . $data['estado'] . '","' . $data['idLote'] . '","' . $data['identifTerminal'] . '")';
+		//mysql_query($query);
+		//$this->insertClient(array( 'idCliente'=>$data["idCliente"], 'cliente'=>$data['cliente'] ));
+		//echo count($trxs['1']);
+		/*for($i = 0; $i < count($trxs); ++$i) {
+  			// do something with $array[$i]
+  		//	$obj = new stdClass();
+  		//	$obj = $trxs[$i]; 
+  		//	echo $obj;
+			echo $trxs[$i];
+		}*/
+
+		$index = 0;
+		foreach ($trxs as $trx) {
+		//for($i=0;$i<count($trxs);$i++) {
+			if($index > 2) {
+			//if($index > 3) {
+				/*echo $data['fileId']; // ARCHIVO_ID
+				echo $trx['A']; // FECHA
+				echo $trx['B']; // ID_CLIENTE
+				echo $trx['B']; // ID_CLIENTE_BIS
+				echo $trx['C']; // CLIENTE
+				echo $trx['D']; // ID_USUARIO
+				echo $trx['F']; // USUARIO
+				echo $trx['E']; // ID_PRODUCTO
+				echo $trx['G']; // PRODUCTO
+				echo $trx['H']; // CARTEL
+				echo $trx['I']; // IMPORTE
+				echo $trx['J']; // CANTIDAD_TRXS
+				echo $trx['K']; // TRX_PROMEDIO
+				echo $trx['L']; // ID_TERMINAL
+				echo $trx['M']; // TERMINAL
+				echo $trx['N']; // MODELO_DE_TERMINAL
+				echo $trx['O']; // TIPO_TRX
+				echo $trx['P']; // ESTADO
+				echo $trx['Q']; // ID_LOTE
+				echo $trx['R']; // IDENTIFICACION_TERMINAL*/
+				//print '<br>';
+				//print '----------------';
+				//print '<br>';
+
+				$query = 'INSERT INTO transacciones (ARCHIVO_ID,FECHA,ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE,ID_USUARIO,USUARIO,ID_PRODUCTO,PRODUCTO,CARTEL,IMPORTE,CANTIDAD_TRXS,TRX_PROMEDIO,ID_TERMINAL,TERMINAL,MODELO_DE_TERMINAL,TIPO_TRX,ESTADO,ID_LOTE,IDENTIFICACION_TERMINAL) VALUES ("' . $data['fileId'] . '","' . $trx['A'] . '","' . $trx['B'] . '","' . $trx['B'] . '","' . $trx['C'] . '","' . $trx['D'] . '","' . $trx['E'] . '","' . $trx['F'] . '","' . $trx['G'] . '","' . $trx['H'] . '","' . $trx['I'] . '","' . $trx['J'] . '","' . $trx['K'] . '","' . $trx['L'] . '","' . $trx['M'] . '","' . $trx['N'] . '","' . $trx['O'] . '","' . $trx['P'] . '","' . $trx['Q'] . '","' . $trx['R'] . '")';
+				//$query = 'INSERT INTO transacciones (ARCHIVO_ID,FECHA,ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE,ID_USUARIO,USUARIO,ID_PRODUCTO,PRODUCTO,CARTEL,IMPORTE,CANTIDAD_TRXS,TRX_PROMEDIO,ID_TERMINAL,TERMINAL,MODELO_DE_TERMINAL,TIPO_TRX,ESTADO,ID_LOTE,IDENTIFICACION_TERMINAL) VALUES ("' . $data['fileId'] . '","' . $trxs[$i]['A'] . '","' . $trxs[$i]['B'] . '","' . $trxs[$i]['B'] . '","' . $trxs[$i]['C'] . '","' . $trxs[$i]['D'] . '","' . $trxs[$i]['E'] . '","' . $trxs[$i]['F'] . '","' . $trxs[$i]['G'] . '","' . $trxs[$i]['H'] . '","' . $trxs[$i]['I'] . '","' . $trxs[$i]['J'] . '","' . $trxs[$i]['K'] . '","' . $trxs[$i]['L'] . '","' . $trxs[$i]['M'] . '","' . $trxs[$i]['N'] . '","' . $trxs[$i]['O'] . '","' . $trxs[$i]['P'] . '","' . $trxs[$i]['Q'] . '","' . $trxs[$i]['R'] . '")';
+				mysql_query($query);
+				$this->insertClient(array( 'idCliente'=>$trx['B'], 'cliente'=>$trx['C'] ));
+				//$this->insertClient(array( 'idCliente'=>$trxs[$i]['B'], 'cliente'=>$trxs[$i]['C'] ));
+			}
+			$index++;
+		}
+
+		$this->close();
+	}
+
 
 	public function removeDataById($data){
 		$this->connect();
@@ -121,13 +191,20 @@ class Storage {
 		$this->close();
 	}
 
-	public function insertClient($data){
+	/*public function insertClient($data){
 		$this->connect();
 		if($this->checkClient($data['idCliente']) == 0){
 			$query = 'INSERT INTO clientes (ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE) VALUES ("' . $data['idCliente'] . '","' . $data['idCliente'] . '","' . $data['cliente']  . '")';
 			mysql_query($query);
 		}
 		$this->close();
+	}*/
+
+	public function insertClient($data){
+		if($this->checkClient($data['idCliente']) == 0){
+			$query = 'INSERT INTO clientes (ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE) VALUES ("' . $data['idCliente'] . '","' . $data['idCliente'] . '","' . $data['cliente']  . '")';
+			mysql_query($query);
+		}
 	}
 
 	public function checkClient($idCliente){

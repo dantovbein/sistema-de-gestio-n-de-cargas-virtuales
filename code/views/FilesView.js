@@ -39,7 +39,6 @@ FilesView.prototype.getFiles = function(){
 }
 
 FilesView.prototype.reloadData = function(e){
-	debugger;
 	e.stopPropagation();
 	var self = e.data.context;
 	self.getFiles();

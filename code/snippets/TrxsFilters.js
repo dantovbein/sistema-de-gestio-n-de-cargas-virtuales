@@ -69,11 +69,13 @@ TrxsFilters.prototype.getUsers = function() {
 		async : false,
 		url : "service/manager/getUsers.php",
 		success : function(r){
-			$(this.node).find("#users-list").append("<option data-id='0'>Todos</option>");
-			JSON.parse(r).forEach(function(d){
-				var opt = "<option data-id='" + d.idUsuario + "'>" + d.usuario + "</option>";
-				$(this.node).find("#users-list").append(opt);
-			},this);
+			if(JSON.parse(r).length > 0){
+				$(this.node).find("#users-list").append("<option data-id='0'>Todos</option>");
+				JSON.parse(r).forEach(function(d){
+					var opt = "<option data-id='" + d.idUsuario + "'>" + d.usuario + "</option>";
+					$(this.node).find("#users-list").append(opt);
+				},this);
+			}
 		},
 		error : function(error){
 			debugger;
@@ -88,11 +90,13 @@ TrxsFilters.prototype.getClients = function() {
 		async : false,
 		url : "service/manager/getClients.php",
 		success : function(r){
-			$(this.node).find("#clients-list").append("<option data-id='0'>Todos</option>");
-			JSON.parse(r).forEach(function(d){
-				var opt = "<option data-id='" + d.idCliente + "'>" + d.cliente + "</option>";
-				$(this.node).find("#clients-list").append(opt);
-			},this);
+			if(JSON.parse(r).length > 0){
+				$(this.node).find("#clients-list").append("<option data-id='0'>Todos</option>");
+				JSON.parse(r).forEach(function(d){
+					var opt = "<option data-id='" + d.idCliente + "'>" + d.cliente + "</option>";
+					$(this.node).find("#clients-list").append(opt);
+				},this);
+			}
 		},
 		error : function(error){
 			debugger;
@@ -109,11 +113,13 @@ TrxsFilters.prototype.getTerminals = function() {
 		async : false,
 		url : "service/manager/getTerminals.php",
 		success : function(r){
-			$(this.node).find("#terminals-list").append("<option data-id='0'>Todas</option>");
-			JSON.parse(r).forEach(function(d){
-				var opt = "<option data-modelo='" + d.modeloDeTerminal + "'>" + d.modeloDeTerminal + "</option>";
-				$(this.node).find("#terminals-list").append(opt);
-			},this);
+			if(JSON.parse(r).length > 0){
+				$(this.node).find("#terminals-list").append("<option data-id='0'>Todas</option>");
+				JSON.parse(r).forEach(function(d){
+					var opt = "<option data-modelo='" + d.modeloDeTerminal + "'>" + d.modeloDeTerminal + "</option>";
+					$(this.node).find("#terminals-list").append(opt);
+				},this);
+			}
 		},
 		error : function(error){
 			debugger;
@@ -128,10 +134,12 @@ TrxsFilters.prototype.getTrsxStatus = function() {
 		async : false,
 		url : "service/manager/getTrxsStatus.php",
 		success : function(r){
-			JSON.parse(r).forEach(function(d){
-				var opt = "<option data-status='" + d.estado + "'>" + d.estado + "</option>";
-				$(this.node).find("#trxs-status-list").append(opt);
-			},this);
+			if(JSON.parse(r).length > 0){
+				JSON.parse(r).forEach(function(d){
+					var opt = "<option data-status='" + d.estado + "'>" + d.estado + "</option>";
+					$(this.node).find("#trxs-status-list").append(opt);
+				},this);
+			}
 		},
 		error : function(error){
 			debugger;
