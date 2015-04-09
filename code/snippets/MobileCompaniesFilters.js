@@ -23,13 +23,15 @@ MobileCompaniesFilters.prototype.getProducts = function() {
 		async : false,
 		url : "service/manager/getProducts.php",
 		success : function(r){
-			$(this.node).find("#products-list").append("<option data-id='0'>Todos</option>");
-			JSON.parse(r).forEach(function(d){
-				if(d.idProducto != 24){
-					var opt = "<option data-id='" + d.idProducto + "'>" + d.producto + "</option>";
-					$(this.node).find("#products-list").append(opt);
-				}
-			},this);
+			if(JSON.parse(r).length > 0){
+				$(this.node).find("#products-list").append("<option data-id='0'>Todos</option>");
+				JSON.parse(r).forEach(function(d){
+					if(d.idProducto != 24){
+						var opt = "<option data-id='" + d.idProducto + "'>" + d.producto + "</option>";
+						$(this.node).find("#products-list").append(opt);
+					}
+				},this);
+			}
 		},
 		error : function(error){
 			debugger;

@@ -8,6 +8,7 @@ Main.prototype.constructor = Main;
 Main.prototype.initializeParameters = function() {
 	this.isLogged = false;
 	this.container = $("body");
+	this.currentView  = "";
 	Monkeyman.setMain(this);
 }
 
@@ -70,37 +71,43 @@ Main.prototype.getMainView = function() {
 	$(this.node).find(".btn-logout").click( { context:this },this.onLogout );
 
 	$(this.node).find(".btn-transactions").click( { context:this, view:Globals.TRANSACTIONS_VIEW },function(e){
-		e.data.context.getView(e.data.view);	
+		e.data.context.getView({ view:e.data.view, target:this });
 	});
 	$(this.node).find(".btn-upload-file").click( { context:this, view:Globals.UPLOAD_FILE_VIEW },function(e){
-		e.data.context.getView(e.data.view);	
+		e.data.context.getView({ view:e.data.view, target:this });
 	});
 	$(this.node).find(".btn-files").click( { context:this, view:Globals.FILES_VIEW },function(e){
-		e.data.context.getView(e.data.view);
+		e.data.context.getView({ view:e.data.view, target:this });
 	});
 	$(this.node).find(".btn-settings").click( { context:this, view:Globals.SETTINGS_VIEW },function(e){
-		e.data.context.getView(e.data.view);
+		e.data.context.getView({ view:e.data.view, target:this });
 	});
 
-	this.getView(Globals.TRANSACTIONS_VIEW);
+	this.getView({ view:Globals.TRANSACTIONS_VIEW, target:$(this.node).find(".btn-transactions") });
 	this.addTopButton();
 }
 
-Main.prototype.getView = function(v) {
-	Utils.removeContent();	
-	switch(v){
-		case Globals.TRANSACTIONS_VIEW:
-			this.view = new TransactionsView({ container:$(this.node).find("#main-content") });
-			break;
-		case Globals.UPLOAD_FILE_VIEW:
-			this.view = new UploadFileView({ container:$(this.node).find("#main-content") });
-			break;
-		case Globals.FILES_VIEW:
-			this.view = new FilesView({ container:$(this.node).find("#main-content") });
-			break;
-		case Globals.SETTINGS_VIEW:
-			this.view = new SettingsView({ container:$(this.node).find("#main-content") });
-			break;
+Main.prototype.getView = function(data) {
+	if(this.currentView != "" && this.currentView == data.view){
+		return false;
+	}else{
+		this.currentView = data.view;
+		Utils.removeContent();
+		Monkeyman.highlightButton(data.target,$(this.node).find(".main-nav ul"),"selected");
+		switch(this.currentView){
+			case Globals.TRANSACTIONS_VIEW:
+				this.view = new TransactionsView({ container:$(this.node).find("#main-content") });
+				break;
+			case Globals.UPLOAD_FILE_VIEW:
+				this.view = new UploadFileView({ container:$(this.node).find("#main-content") });
+				break;
+			case Globals.FILES_VIEW:
+				this.view = new FilesView({ container:$(this.node).find("#main-content") });
+				break;
+			case Globals.SETTINGS_VIEW:
+				this.view = new SettingsView({ container:$(this.node).find("#main-content") });
+				break;
+		}
 	}
 }
 

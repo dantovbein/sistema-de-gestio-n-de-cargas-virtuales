@@ -341,5 +341,6 @@ UploadFileView.prototype.resetForm = function(){
     //Monkeyman.stopLoading()
 }
 
+
  
 

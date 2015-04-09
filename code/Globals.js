@@ -8,5 +8,7 @@ var Globals = {
 	REFRESH_DATA : "refreshData",
 	SHOW_DATA_BY_FILTERS : "showDataByFilters",
 	RELOAD_DATA : "reloadData",
-	MESSAGE_NO_RESULT : "No se encontro ningún resultado"
+	MESSAGE_NO_RESULT : "No se encontro ningún resultado",
+	MESSAGE_NO_FILES : "No hay ningún archivo subido",
+	MESSAGE_NO_CLIENTS : "No hay ningún cliente sincronizado"
 };

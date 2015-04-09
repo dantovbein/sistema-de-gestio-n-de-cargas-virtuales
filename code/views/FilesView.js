@@ -23,14 +23,16 @@ FilesView.prototype.getFiles = function(){
 		async : false,
 		url : "service/manager/getFiles.php",
 		success : function(r){
-			debugger;
 			var result = JSON.parse(r);
-			var itemFile;
-
-			result.forEach(function(f){
-				itemFile = new ItemFile({ container:$(this.node).find(".files-list"),data:f });
-				$(itemFile).bind(Globals.RELOAD_DATA,{ context:this},this.reloadData,false);
-			},this);
+			if(result.length == 0){
+				$(this.node).find(".files-list").append('<li class="message-no-result">'+Globals.MESSAGE_NO_FILES+'</li>');
+			}else{
+				var itemFile;
+				result.forEach(function(f){
+					itemFile = new ItemFile({ container:$(this.node).find(".files-list"),data:f });
+					$(itemFile).bind(Globals.RELOAD_DATA,{ context:this},this.reloadData,false);
+				},this);
+			}
 		},
 		error : function(error){
 			debugger;

@@ -63,3 +63,12 @@ ItemClient.prototype.updateData = function(){
 		}
 	});
 }
+
+ItemClient.prototype.getClientData = function() {
+	return { 
+				idCliente:this.config.data.idCliente,
+				clienteZona:$(this.node).find(".select-zone").val(),
+				clienteComision:(isNaN($(this.node).find(".comision-amount").val().replace(",","."))) ? "0.00" : parseFloat($(this.node).find(".comision-amount").val().replace(",",".")).toFixed(2),
+				clienteStatus:this.statusClient
+	}
+}
