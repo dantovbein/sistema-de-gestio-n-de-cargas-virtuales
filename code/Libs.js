@@ -29,7 +29,7 @@ Libs.prototype.getFiles = function(_lib_) {
 				"css/filesView.css",
 				"code/monkeyman/core/oop.js",
 				"code/monkeyman/core/Snippet.js",
-				"code/monkeyman/core/Monkeyman-1.0.13.js",
+				"code/monkeyman/core/Monkeyman.js",
 				"code/monkeyman/core/snippets/GenericSnippet.js",
 				"code/monkeyman/core/views/GenericView.js",
 				"code/Utils.js",

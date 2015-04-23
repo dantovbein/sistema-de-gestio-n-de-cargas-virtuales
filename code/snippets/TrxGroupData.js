@@ -1,12 +1,14 @@
 function TrxGroupData(config) {
-	this.tiradas = Number(config.data.length);
-	this.clienteComision = Number(config.data[0].clienteComision);
-	this.totalImporteComision = Number(this.clienteComision * this.tiradas);
 	this.totalTrxs = 0;
+	this.tiradas = 0;
 	config.data.forEach(function(t){
 		this.totalTrxs += Number(t.importe);
+		this.tiradas += Number(t.cantidadTrxs);
 	},this);
 	Number(this.totalTrxs);
+	Number(this.tiradas);
+	this.clienteComision = Number(config.data[0].clienteComision);
+	this.totalImporteComision = Number(this.clienteComision) * this.tiradas;
 	GenericSnippet.call(this,config);	
 } 
 
@@ -35,4 +37,12 @@ TrxGroupData.prototype.initialize = function() {
 
 TrxGroupData.prototype.addHandlers = function() {
 	GenericSnippet.prototype.addHandlers.call(this);
+}
+
+TrxGroupData.prototype.setTiradas = function(value) {
+	this.tiradas = value;
+}
+
+TrxGroupData.prototype.getTiradas = function() {
+	return this.tiradas;
 }

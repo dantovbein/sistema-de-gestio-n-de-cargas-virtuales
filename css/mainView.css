@@ -6,11 +6,3 @@ nav.main-nav ul li:last-child { margin-right: 0; }
 nav.main-nav ul li:hover { background-color: #C44741; }
 nav.main-nav ul li.selected { background-color: #C44741; }
 nav.main-nav ul li span { font-size: 18px; }
-/*.btn-upload-file {
-  display: inline-block;
-  float: right;
-  padding: 5px 10px;
-  margin: 7px 15px;
-  background-color: rgb(241, 98, 61);
-  border-radius: 5px;
-}*/

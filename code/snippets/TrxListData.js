@@ -21,6 +21,7 @@ TrxListData.prototype.initialize = function() {
 							(this.config.data.clienteZona==0) ? "-" : "ZONA " + this.config.data.clienteZona,
 							this.config.data.modeloDeTerminal,
 							this.config.data.identifTerminal,
+							this.config.data.cantidadTrxs,
 							this.config.data.estado,
 							this.config.data.importe
 						];

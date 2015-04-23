@@ -211,7 +211,7 @@
 
 .trx-group-data .trxs-list-header .trxs-list-header-column:nth-child(1),
 .trxs-list-data .trx-item-row:nth-child(1){
-	width: 10%;
+	width: 8%;
 }
 .trx-group-data .trxs-list-header .trxs-list-header-column:nth-child(2),
 .trxs-list-data .trx-item-row:nth-child(2){
@@ -235,14 +235,20 @@
 }
 .trx-group-data .trxs-list-header .trxs-list-header-column:nth-child(7),
 .trxs-list-data .trx-item-row:nth-child(7){
-	width: 12%;
+	width: 10%;
 }
 .trx-group-data .trxs-list-header .trxs-list-header-column:nth-child(8),
 .trxs-list-data .trx-item-row:nth-child(8){
-	width: 8%;
+	width: 6%;
 }
+
 .trx-group-data .trxs-list-header .trxs-list-header-column:nth-child(9),
 .trxs-list-data .trx-item-row:nth-child(9){
+	width: 7%;
+}
+
+.trx-group-data .trxs-list-header .trxs-list-header-column:nth-child(10),
+.trxs-list-data .trx-item-row:nth-child(10){
 	width: 9%;
 }
 
@@ -259,12 +265,12 @@
 
 .trx-detail-amount .item-trx-detail-amount label {
 	float: left;
-	width: 69%;
+	width: 72%;
 }
 
 .trx-detail-amount .item-trx-detail-amount .trx-detail-value {
 	float: left;
-	width: 30%;
+	width: 28%;
 	font-family: "Lato-Bold";
 }
 
