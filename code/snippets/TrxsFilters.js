@@ -59,6 +59,10 @@ TrxsFilters.prototype.setDefaultDate = function() {
 	$(this.node).find("#day-from.select-day").val( Utils.addZero(Utils.getDays()[today.getDate()-1]) );
 	$(this.node).find("#month-from.select-month").val(Monkeyman.getMonths()[0].es[today.getMonth()]);
 	$(this.node).find("#year-from.select-year").val(today.getFullYear());
+
+	$(this.node).find("#day-to.select-day").val( Utils.addZero(Utils.getDays()[today.getDate()-1]) );
+	$(this.node).find("#month-to.select-month").val(Monkeyman.getMonths()[0].es[today.getMonth()]);
+	$(this.node).find("#year-to.select-year").val(today.getFullYear());
 }
 
 
@@ -175,7 +179,8 @@ TrxsFilters.prototype.getTrxsByFilters = function(){
 			Monkeyman.stopLoading();
 			debugger;
 			var result = JSON.parse(r);
-			Monkeyman.getMain().view.showDataByFilters({ trxs : result });
+			
+			Monkeyman.getMain().view.showDataByFilters({ trxs : result, trxType : this.filterType });
 		},
 		error : function(error){
 			debugger;
@@ -183,27 +188,46 @@ TrxsFilters.prototype.getTrxsByFilters = function(){
 	});
 }
 
-TrxsFilters.prototype.getData = function(){
-	var fecha = new Date();
-	fecha.setDate($(this.node).find("#day-from").val());
-	fecha.setMonth(Monkeyman.getMonthId($(this.node).find("#month-from").val(),"es"));
-	fecha.setFullYear($(this.node).find("#year-from").val());
-	fecha = fecha.getFullYear() + "-" + Monkeyman.addZero(fecha.getMonth()+1) + "-" + Monkeyman.addZero(fecha.getDate());
-	
-	var idUsuario = $(this.node).find("#users-list :selected").data("id");
-	var idCliente = $(this.node).find("#clients-list :selected").data("id");
-	var idProducto = $(this.node).find("#products-list :selected").data("id");
-	var modeloDeTerminal = $(this.node).find("#terminals-list :selected").data("modelo");
-	var estado = $(this.node).find("#trxs-status-list :selected").data("status");
-	var clienteZona = parseInt($(this.node).find("#zones-list").val());
-	
-	return { 	
-				fecha:fecha,
-				idUsuario:(idUsuario==0) ? "" : idUsuario,
-				idCliente:(idCliente==0) ? "" : idCliente,
-				idProducto:(idProducto==0) ? "" : idProducto,
-				modeloDeTerminal:(modeloDeTerminal==0) ? "" : modeloDeTerminal,
-				estado:estado,
-				clienteZona:(clienteZona==0) ? "" : clienteZona 
-			}
+TrxsFilters.prototype.getData = function() { }
+
+TrxsFilters.prototype.getDateFrom = function(){
+	var d = new Date();
+	d.setDate($(this.node).find("#day-from").val());
+	d.setMonth(Monkeyman.getMonthId($(this.node).find("#month-from").val(),"es"));
+	d.setFullYear($(this.node).find("#year-from").val());
+	return d.getFullYear() + "-" + Monkeyman.addZero(d.getMonth()+1) + "-" + Monkeyman.addZero(d.getDate());
 }
+
+TrxsFilters.prototype.getDateTo = function(){
+	var d = new Date();
+	d.setDate($(this.node).find("#day-to").val());
+	d.setMonth(Monkeyman.getMonthId($(this.node).find("#month-to").val(),"es"));
+	d.setFullYear($(this.node).find("#year-to").val());
+	return d.getFullYear() + "-" + Monkeyman.addZero(d.getMonth()+1) + "-" + Monkeyman.addZero(d.getDate());
+}
+
+TrxsFilters.prototype.getUserId = function(){
+	return ($(this.node).find("#users-list :selected").data("id")==0) ? "" : $(this.node).find("#users-list :selected").data("id");
+}
+
+TrxsFilters.prototype.getClientId = function(){
+	return ($(this.node).find("#clients-list :selected").data("id")==0) ? "" : $(this.node).find("#clients-list :selected").data("id");
+}
+
+TrxsFilters.prototype.getProductId = function(){
+	return ($(this.node).find("#products-list :selected").data("id")==0) ? "" : $(this.node).find("#products-list :selected").data("id");
+}
+
+TrxsFilters.prototype.getTerminalModel = function(){
+	return ($(this.node).find("#terminals-list :selected").data("modelo")==0) ? "" : $(this.node).find("#terminals-list :selected").data("modelo");
+}
+
+TrxsFilters.prototype.getStatus = function() {
+	return $(this.node).find("#trxs-status-list :selected").data("status");
+}
+
+TrxsFilters.prototype.getClientZone = function() {
+	return (parseInt($(this.node).find("#zones-list").val())==0) ? "" : parseInt($(this.node).find("#zones-list").val());
+}
+
+

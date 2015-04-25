@@ -10,6 +10,7 @@ MobileCompaniesFilters.prototype.initializeParameters = function(){
 	TrxsFilters.prototype.initializeParameters.call(this);
 	this.path = "snippets/mobileCompaniesFilters.html";
 	this.urlService = "service/manager/getMobileTrxs.php";
+	this.filterType = Globals.TRXS_MOBILE_COMPANIES;
 }
 
 MobileCompaniesFilters.prototype.initialize = function(){
@@ -37,4 +38,17 @@ MobileCompaniesFilters.prototype.getProducts = function() {
 			debugger;
 		}
 	})
+}
+
+MobileCompaniesFilters.prototype.getData = function() {
+	return { 	
+		desde:this.getDateFrom(),
+		hasta:this.getDateTo(),
+		idUsuario:this.getUserId(),
+		idCliente:this.getClientId(),
+		idProducto:this.getProductId(),
+		modeloDeTerminal:this.getTerminalModel(),
+		estado:this.getStatus(),
+		clienteZona:this.getClientZone()
+	}
 }

@@ -26,6 +26,10 @@ ManagerTrxsFilters.prototype.addHandlers = function() {
 		e.preventDefault();
 		e.data.context.getTvCompaniesFilters();
 	});
+	$(this.node).find(".btn-report-filters").click( { context : this }, function(e){
+		e.preventDefault();
+		e.data.context.getReportFilters();
+	});
 }
 
 ManagerTrxsFilters.prototype.getMobileCompaniesFilters = function(){
@@ -40,4 +44,11 @@ ManagerTrxsFilters.prototype.getTvCompaniesFilters = function(){
 	$(this.node).find(".wrapper-form-data-filters").empty();
 	Monkeyman.highlightButton($(this.node).find(".btn-filters-by-tv-companies"),$(this.node).find(".data-filters-main-nav ul"),"selected");
 	var filters = new TvCompaniesFilters({ container:$(this.node).find(".wrapper-form-data-filters") });
+}
+
+ManagerTrxsFilters.prototype.getReportFilters = function(){
+	this.config._parent.reset();
+	$(this.node).find(".wrapper-form-data-filters").empty();
+	Monkeyman.highlightButton($(this.node).find(".btn-report-filters"),$(this.node).find(".data-filters-main-nav ul"),"selected");
+	var filters = new ReportFilters({ container:$(this.node).find(".wrapper-form-data-filters") });
 }

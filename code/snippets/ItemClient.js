@@ -12,7 +12,7 @@ ItemClient.prototype.initializeParameters = function(){
 
 	this.statusClient = parseInt(this.config.data.clienteStatus);
 	this.zoneClient = (this.config.data.clienteZona=="") ? 0 : this.config.data.clienteZona;
-	this.dataSnippet = [ this.config.data.idCliente,this.config.data.cliente,this.config.data.clienteComision,this.statusClient ]
+	this.dataSnippet = [ this.config.data.idCliente,this.config.data.cliente,this.config.data.clienteComisionTelefonia,this.config.data.clienteComisionTvPrepaga,this.statusClient ]
 }
 
 ItemClient.prototype.initialize = function(){
@@ -21,18 +21,6 @@ ItemClient.prototype.initialize = function(){
 	
 	this.setStatusClient();
 	this.setZoneClient();
-	//$(this.node).find(".btn-save").click({ context:this }, this.onSaveHandler );
-	//$(this.node).find(".btn-status").click({ context:this }, this.onStatusHandler );
-}
-
-ItemClient.prototype.onSaveHandler = function(e){
-	//e.data.context.updateData();
-}
-
-ItemClient.prototype.onStatusHandler = function(e){
-	var self = e.data.context;
-	self.statusClient = (self.statusClient==1) ? 0 : 1;
-	self.setStatusClient();
 }
 
 ItemClient.prototype.setStatusClient = function(){
@@ -44,14 +32,15 @@ ItemClient.prototype.setZoneClient = function(){
 } 
 
 ItemClient.prototype.updateData = function(){
-	var clienteComision = (isNaN($(this.node).find(".comision-amount").val().replace(",","."))) ? "0.00" : $(this.node).find(".comision-amount").val().replace(",",".");
+	var clienteComisionTelefonia = (isNaN($(this.node).find(".tel.comision-amount").val().replace(",","."))) ? "0.00" : $(this.node).find(".tel.comision-amount").val().replace(",",".");
 	$.ajax({
 		context : this,
 		type : "POST",
 		data : { 
 					idCliente:this.config.data.idCliente,
 					clienteZona:$(this.node).find(".select-zone").val(),
-					clienteComision:clienteComision,
+					clienteComisionTelefonia:clienteComisionTelefonia,
+					clienteComisionTvPrepaga:this.getTvComisionAmount(),
 					clienteStatus:this.statusClient
 		},
 		url : "service/manager/updateClient.php",
@@ -68,7 +57,12 @@ ItemClient.prototype.getClientData = function() {
 	return { 
 				idCliente:this.config.data.idCliente,
 				clienteZona:$(this.node).find(".select-zone").val(),
-				clienteComision:(isNaN($(this.node).find(".comision-amount").val().replace(",","."))) ? "0.00" : parseFloat($(this.node).find(".comision-amount").val().replace(",",".")).toFixed(2),
+				clienteComisionTelefonia:(isNaN($(this.node).find(".tel.comision-amount").val().replace(",","."))) ? "0.00" : parseFloat($(this.node).find(".tel.comision-amount").val().replace(",",".")).toFixed(2),
+				clienteComisionTvPrepaga:this.getTvComisionAmount(),
 				clienteStatus:this.statusClient
 	}
+}
+
+ItemClient.prototype.getTvComisionAmount = function(){
+	return (isNaN($(this.node).find(".tv.comision-amount").val().replace(",","."))) ? "0.00" : $(this.node).find(".tv.comision-amount").val().replace(",",".");
 }

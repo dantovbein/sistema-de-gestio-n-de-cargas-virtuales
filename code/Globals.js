@@ -10,5 +10,7 @@ var Globals = {
 	RELOAD_DATA : "reloadData",
 	MESSAGE_NO_RESULT : "No se encontro ningún resultado",
 	MESSAGE_NO_FILES : "No hay ningún archivo subido",
-	MESSAGE_NO_CLIENTS : "No hay ningún cliente sincronizado"
+	MESSAGE_NO_CLIENTS : "No hay ningún cliente sincronizado",
+	TRXS_MOBILE_COMPANIES : "trxsMobileCompanies",
+	TRXS_TV_COMPANIES : "trxsTvCompanies"
 };

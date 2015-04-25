@@ -165,15 +165,6 @@ class Storage {
 		$this->close();
 	}
 
-	/*public function insertClient($data){
-		$this->connect();
-		if($this->checkClient($data['idCliente']) == 0){
-			$query = 'INSERT INTO clientes (ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE) VALUES ("' . $data['idCliente'] . '","' . $data['idCliente'] . '","' . $data['cliente']  . '")';
-			mysql_query($query);
-		}
-		$this->close();
-	}*/
-
 	public function insertClient($data){
 		if($this->checkClient($data['idCliente']) == 0){
 			$query = 'INSERT INTO clientes (ID_CLIENTE,ID_CLIENTE_BIS,CLIENTE) VALUES ("' . $data['idCliente'] . '","' . $data['idCliente'] . '","' . $data['cliente']  . '")';
@@ -191,7 +182,7 @@ class Storage {
 
 	public function updateClient($data){
 		$this->connect();
-		$query = 'UPDATE clientes SET CLIENTE_ZONA="' . $data['clienteZona'] . '",' . 'CLIENTE_COMISION="' . $data['clienteComision'] . '",' . 'CLIENTE_STATUS="' . $data['clienteStatus'] . '"' . ' WHERE ID_CLIENTE="' . $data['idCliente'] . '"' ;
+		$query = 'UPDATE clientes SET CLIENTE_ZONA="' . $data['clienteZona'] . '",' . 'CLIENTE_COMISION_TELEFONIA="' . $data['clienteComisionTelefonia'] . '",' . 'CLIENTE_COMISION_TV_PREPAGA="' . $client['clienteComisionTvPrepaga'] . '",' . 'CLIENTE_STATUS="' . $data['clienteStatus'] . '"' . ' WHERE ID_CLIENTE="' . $data['idCliente'] . '"' ;
 		mysql_query($query);
 		$this->close();
 	}
@@ -200,7 +191,7 @@ class Storage {
 		$this->connect();
 		$clients = json_decode($data['clients'],true);
 		foreach ($clients as $client) {
-			$query = 'UPDATE clientes SET CLIENTE_ZONA="' . $client['clienteZona'] . '",' . 'CLIENTE_COMISION="' . $client['clienteComision'] . '",' . 'CLIENTE_STATUS="' . $client['clienteStatus'] . '"' . ' WHERE ID_CLIENTE="' . $client['idCliente'] . '"' ;
+			$query = 'UPDATE clientes SET CLIENTE_ZONA="' . $client['clienteZona'] . '",' . 'CLIENTE_COMISION_TELEFONIA="' . $client['clienteComisionTelefonia'] . '",' . 'CLIENTE_COMISION_TV_PREPAGA="' . $client['clienteComisionTvPrepaga'] . '",' . 'CLIENTE_STATUS="' . $client['clienteStatus'] . '"' . ' WHERE ID_CLIENTE="' . $client['idCliente'] . '"' ;
 			mysql_query($query);
 		}
 		$this->close();
@@ -216,7 +207,8 @@ class Storage {
 			$obj->idCliente = $row['ID_CLIENTE'];
 			$obj->cliente = $row['CLIENTE'];
 			$obj->clienteZona = $row['CLIENTE_ZONA'];
-			$obj->clienteComision = $row['CLIENTE_COMISION'];
+			$obj->clienteComisionTelefonia = $row['CLIENTE_COMISION_TELEFONIA'];
+			$obj->clienteComisionTvPrepaga = $row['CLIENTE_COMISION_TV_PREPAGA'];
 			$obj->clienteStatus = $row['CLIENTE_STATUS'];
 			array_push($data,$obj);
 		}
@@ -286,9 +278,11 @@ class Storage {
 
 	public function getMobileTrxs($data) {
 		$this->connect();
-		$query = 'SELECT T1.ID_TRX,T1.FECHA,T1.ESTADO,T1.ID_CLIENTE,T1.CLIENTE,T1.ID_USUARIO,T1.USUARIO,T1.ID_PRODUCTO,T1.PRODUCTO,T1.CARTEL,T1.IMPORTE,T1.CANTIDAD_TRXS,T1.TRX_PROMEDIO,T1.ID_TERMINAL,T1.TERMINAL,T1.MODELO_DE_TERMINAL,T1.TIPO_TRX,T1.ID_LOTE,T1.IDENTIFICACION_TERMINAL,T2.CLIENTE_ZONA,T2.CLIENTE_COMISION,T2.CLIENTE_STATUS FROM transacciones T1 INNER JOIN clientes T2 ON T1.ID_CLIENTE_BIS = T2.ID_CLIENTE_BIS WHERE ';
-		$query .= 'T1.FECHA="' . $data['fecha'] . '"';
+		$query = 'SELECT T1.ID_TRX,T1.FECHA,T1.ESTADO,T1.ID_CLIENTE,T1.CLIENTE,T1.ID_USUARIO,T1.USUARIO,T1.ID_PRODUCTO,T1.PRODUCTO,T1.CARTEL,T1.IMPORTE,T1.CANTIDAD_TRXS,T1.TRX_PROMEDIO,T1.ID_TERMINAL,T1.TERMINAL,T1.MODELO_DE_TERMINAL,T1.TIPO_TRX,T1.ID_LOTE,T1.IDENTIFICACION_TERMINAL,T2.CLIENTE_ZONA,T2.CLIENTE_COMISION_TELEFONIA,T2.CLIENTE_COMISION_TV_PREPAGA,T2.CLIENTE_STATUS FROM transacciones T1 INNER JOIN clientes T2 ON T1.ID_CLIENTE_BIS = T2.ID_CLIENTE_BIS WHERE';
+		$query .= ' FECHA BETWEEN ' . "'" . $data['desde'] . "'" . ' AND ' . "'" . $data['hasta'] . "'";
 		$query .= ' AND T1.ESTADO="' . $data['estado'] . '"';
+
+
 
 		if($data['idUsuario'] != ""){
 			$query .= ' AND T1.ID_USUARIO="' . $data['idUsuario'] . '"';
@@ -312,7 +306,7 @@ class Storage {
 			$query .= ' AND T2.CLIENTE_ZONA="' . $data['clienteZona'] . '"';
 		}
 
-		$query .= ' ORDER BY T1.ID_CLIENTE';
+		$query .= ' ORDER BY T1.ID_CLIENTE,T1.FECHA asc';
 		
 		$result = mysql_query($query);
 		$data = array();
@@ -323,7 +317,8 @@ class Storage {
 			$obj->estado = $row['ESTADO'];
 			$obj->idCliente = $row['ID_CLIENTE'];
 			$obj->cliente = $row['CLIENTE'];
-			$obj->clienteComision = $row['CLIENTE_COMISION'];
+			$obj->clienteComisionTelefonia = $row['CLIENTE_COMISION_TELEFONIA'];
+			$obj->clienteComisionTvPrepaga = $row['CLIENTE_COMISION_TV_PREPAGA'];
 			$obj->clienteZona = $row['CLIENTE_ZONA'];
 			$obj->clienteStatus = $row['CLIENTE_STATUS'];
 			$obj->idUsuario = $row['ID_USUARIO'];
@@ -348,8 +343,8 @@ class Storage {
 
 	public function getTvTrxs($data) {
 		$this->connect();
-		$query = 'SELECT T1.ID_TRX,T1.FECHA,T1.ESTADO,T1.ID_CLIENTE,T1.CLIENTE,T1.ID_USUARIO,T1.USUARIO,T1.ID_PRODUCTO,T1.PRODUCTO,T1.CARTEL,T1.IMPORTE,T1.CANTIDAD_TRXS,T1.TRX_PROMEDIO,T1.ID_TERMINAL,T1.TERMINAL,T1.MODELO_DE_TERMINAL,T1.TIPO_TRX,T1.ID_LOTE,T1.IDENTIFICACION_TERMINAL,T2.CLIENTE_ZONA,T2.CLIENTE_COMISION,T2.CLIENTE_STATUS FROM transacciones T1 INNER JOIN clientes T2 ON T1.ID_CLIENTE_BIS = T2.ID_CLIENTE_BIS WHERE ';
-		$query .= 'T1.FECHA="' . $data['fecha'] . '"';
+		$query = 'SELECT T1.ID_TRX,T1.FECHA,T1.ESTADO,T1.ID_CLIENTE,T1.CLIENTE,T1.ID_USUARIO,T1.USUARIO,T1.ID_PRODUCTO,T1.PRODUCTO,T1.CARTEL,T1.IMPORTE,T1.CANTIDAD_TRXS,T1.TRX_PROMEDIO,T1.ID_TERMINAL,T1.TERMINAL,T1.MODELO_DE_TERMINAL,T1.TIPO_TRX,T1.ID_LOTE,T1.IDENTIFICACION_TERMINAL,T2.CLIENTE_ZONA,T2.CLIENTE_COMISION_TELEFONIA,T2.CLIENTE_COMISION_TV_PREPAGA,T2.CLIENTE_STATUS FROM transacciones T1 INNER JOIN clientes T2 ON T1.ID_CLIENTE_BIS = T2.ID_CLIENTE_BIS WHERE';
+		$query .= ' FECHA BETWEEN ' . "'" . $data['desde'] . "'" . ' AND ' . "'" . $data['hasta'] . "'";
 		$query .= ' AND T1.ESTADO="' . $data['estado'] . '"';
 
 		if($data['idUsuario'] != ""){
@@ -372,7 +367,7 @@ class Storage {
 			$query .= ' AND T2.CLIENTE_ZONA="' . $data['clienteZona'] . '"';
 		}
 
-		$query .= ' ORDER BY T1.ID_CLIENTE';
+		$query .= ' ORDER BY T1.ID_CLIENTE,T1.FECHA asc';
 		
 		$result = mysql_query($query);
 		$data = array();
@@ -383,7 +378,8 @@ class Storage {
 			$obj->estado = $row['ESTADO'];
 			$obj->idCliente = $row['ID_CLIENTE'];
 			$obj->cliente = $row['CLIENTE'];
-			$obj->clienteComision = $row['CLIENTE_COMISION'];
+			$obj->clienteComisionTelefonia = $row['CLIENTE_COMISION_TELEFONIA'];
+			$obj->clienteComisionTvPrepaga = $row['CLIENTE_COMISION_TV_PREPAGA'];
 			$obj->clienteZona = $row['CLIENTE_ZONA'];
 			$obj->clienteStatus = $row['CLIENTE_STATUS'];
 			$obj->idUsuario = $row['ID_USUARIO'];
@@ -405,5 +401,41 @@ class Storage {
 		echo json_encode($data);
 		$this->close();
 	}
-}
+
+	public function getReportData($data) {
+		$this->connect();
+		$query = 'SELECT T1.ID_TRX,T1.FECHA,T1.ESTADO,T1.ID_CLIENTE,T1.CLIENTE,T1.ID_USUARIO,T1.USUARIO,T1.ID_PRODUCTO,T1.PRODUCTO,T1.CARTEL,T1.IMPORTE,T1.CANTIDAD_TRXS,T1.TRX_PROMEDIO,T1.ID_TERMINAL,T1.TERMINAL,T1.MODELO_DE_TERMINAL,T1.TIPO_TRX,T1.ID_LOTE,T1.IDENTIFICACION_TERMINAL,T2.CLIENTE_ZONA,T2.CLIENTE_COMISION_TELEFONIA,T2.CLIENTE_COMISION_TV_PREPAGA,T2.CLIENTE_STATUS FROM transacciones T1 INNER JOIN clientes T2 ON T1.ID_CLIENTE_BIS = T2.ID_CLIENTE_BIS WHERE';
+		$query .= ' FECHA BETWEEN ' . "'" . $data['desde'] . "'" . ' AND ' . "'" . $data['hasta'] . "'";
+		$query .= ' AND T1.ESTADO="' . $data['estado'] . '"';
+
+		if($data['idCliente'] != ""){
+			$query .= ' AND T1.ID_CLIENTE="' . $data['idCliente'] . '"';
+		}
+
+		if($data['clienteZona'] != ""){
+			$query .= ' AND T2.CLIENTE_ZONA="' . $data['clienteZona'] . '"';
+		}
+
+		$query .= ' ORDER BY T1.ID_CLIENTE,T1.FECHA asc';
+		
+		$result = mysql_query($query);
+		$data = array();
+		while($row = mysql_fetch_array($result)){
+			$obj = new stdClass();
+			$obj->idCliente = $row['ID_CLIENTE'];
+			$obj->cliente = $row['CLIENTE'];
+			$obj->clienteComisionTelefonia = $row['CLIENTE_COMISION_TELEFONIA'];
+			$obj->clienteComisionTvPrepaga = $row['CLIENTE_COMISION_TV_PREPAGA'];
+			$obj->clienteZona = $row['CLIENTE_ZONA'];
+			$obj->idProducto = $row['ID_PRODUCTO'];
+			$obj->importe = $row['IMPORTE'];
+			$obj->cantidadTrxs = $row['CANTIDAD_TRXS'];
+			array_push($data,$obj);
+		}
+
+		echo json_encode($data);
+		$this->close();
+	}	
+
+} // end Class
 ?>

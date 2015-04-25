@@ -45,8 +45,16 @@ TransactionsView.prototype.showDataByFilters = function(data) {
 	}else{
 		this.totalClientsBetAmount = 0;
 		this.totalClientsTiradasAmount = 0;		
+
 		this.trxs.forEach(function(g){
-			var trxGroupData = new TrxGroupData( { container:$(this.node).find(".wrapper-trxs-list"),data:g } );
+			switch(data.trxType){
+				case Globals.TRXS_MOBILE_COMPANIES:
+					var trxGroupData = new TrxGroupDataMobileCompanies( { container:$(this.node).find(".wrapper-trxs-list"),data:g } );
+					break;
+				case Globals.TRXS_TV_COMPANIES:
+					var trxGroupData = new TrxGroupDataTvCompanies( { container:$(this.node).find(".wrapper-trxs-list"),data:g } );
+					break;
+			}
 			this.totalClientsBetAmount += trxGroupData.totalTrxs;
 			this.totalClientsTiradasAmount += trxGroupData.totalImporteComision;
 		},this);
