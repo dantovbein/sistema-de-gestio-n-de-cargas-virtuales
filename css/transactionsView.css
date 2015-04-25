@@ -1,12 +1,13 @@
-/*
-.wrapper-filters,.wrapper-trxs-list {
-	float: left;
-}*/
-
 .wrapper-trxs-list {
 	width: 100%;
 	font-size: 16px;
-	padding: 40px 0;
+	padding: 10px 0;
+
+}
+
+.wrapper-trxs-group {
+	display: inline-block;
+	width: 100%;
 }
 
 .data-filters .wrapper-data-filters-main-nav .data-filters-main-nav {

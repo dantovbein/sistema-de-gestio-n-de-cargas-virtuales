@@ -67,7 +67,9 @@ TransactionsView.prototype.showDataByFilters = function(data) {
 }
 
 GenericView.prototype.reset = function() {
-	$(this.node).find(".wrapper-data-list").empty();
+	//$(this.node).find(".wrapper-data-list").empty();
+	//$(this.node).find(".wrapper-trxs-group").empty();	
+	$(this.node).find(".wrapper-trxs-list").empty();
 }
 
 

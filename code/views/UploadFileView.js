@@ -184,21 +184,13 @@ UploadFileView.prototype.getExcelData = function(fileName){
         type : "POST",
         data : { fileName : fileName },
         success : function(r){
-           // debugger;
-           // this.parseTrxsData(JSON.parse(r));
-           //this.insertTrxs(JSON.parse(r));
            this.insertTrxs(r);
-
         },
         error : function(error){
-           //alert(error);
            debugger;
         }
     })   
 }
-
-/*
-*/
 
 UploadFileView.prototype.parseTrxsData = function(d) {
     this.trxData = [];
@@ -208,56 +200,7 @@ UploadFileView.prototype.parseTrxsData = function(d) {
 
     this.trxIndex = 3;
     this.insertTrx();
-
-    /*this.trxData.forEach(function(_data,_index){
-        // Los primeros 3 objetos corresponden a titulos del excel
-        if(_index >= 3){
-            this.insertTrx(_data);
-        }
-    },this);*/
-    //Monkeyman.stopLoading();
 }
-
-// Subo la informacion de cada transaccion
-/*UploadFileView.prototype.insertTrx = function(data){
-    $.ajax({
-        context : this,
-        async : false,
-        type : "POST",
-        data : {
-            idArchivo : this.fileId,
-            fecha : data.A,
-            idCliente : data.B,
-            cliente : data.C,
-            idUsuario : data.D,
-            usuario : data.E,
-            idProducto : data.F,
-            producto : data.G,
-            carTel : data.H,
-            importe : data.I.slice(1).replace(',','.'),
-            cantTrxs : data.J,
-            trxProm : data.K.slice(1).replace(',','.'),
-            idTerminal : data.L,
-            terminal : data.M,
-            modeloDeTerminal : data.N,
-            tipoTrx : data.O,
-            estado : data.P,
-            idLote : data.Q,
-            identifTerminal : data.R
-        },
-        url : "service/manager/insertTrx.php",
-        success : function(r){
-            console.log("success insertTrx");
-            debugger;
-           //this.resetForm();
-        },
-        error : function(error){
-            console.log("success error");
-            debugger;
-            //alert(error);
-        }
-    });
-}*/
 
 UploadFileView.prototype.insertTrx = function(){
     if(this.trxData[this.trxIndex] != undefined) {
@@ -338,7 +281,6 @@ UploadFileView.prototype.insertTrxs = function(trxs){
 UploadFileView.prototype.resetForm = function(){
     $(this.node).find('#input-file-name').val("");
     $(this.node).find("#file-path").val("");
-    //Monkeyman.stopLoading()
 }
 
 

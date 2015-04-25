@@ -26,6 +26,11 @@ ReportFilters.prototype.getTrxsByFilters = function(){
 		url : this.urlService,
 		success : function(r){
 			var result = JSON.parse(r);
+			if(result.length==0){
+				Monkeyman.stopLoading();
+				Monkeyman.getMain().view.showDataByFilters({ trxs : result, trxType : this.filterType });
+				return false;
+			}
 			// Parse by client
 			this.groupByClient = [];
 			JSON.parse(r).forEach(function(t,i){
@@ -53,6 +58,7 @@ ReportFilters.prototype.getTrxsByFilters = function(){
 				this.tempDataClient.fecha = this.fecha;
 				this.tempDataClient.idCliente = c[0].idCliente;
 				this.tempDataClient.cliente = c[0].cliente;
+				this.tempDataClient.clienteZona = (c[0].clienteZona==0) ? "Sin asignar" : c[0].clienteZona;
 				this.tempDataClient.clienteComisionTelefonia = c[0].clienteComisionTelefonia;
 				this.tempDataClient.clienteComisionTvPrepaga = c[0].clienteComisionTvPrepaga;
 				this.tempSubtotalTvPrepaga = 0;
@@ -99,7 +105,6 @@ ReportFilters.prototype.getTrxsByFilters = function(){
 }
 
 ReportFilters.prototype.generateReportFile = function(d){
-	debugger;
 	$.ajax({
 		context : this,
 		async : false,
@@ -107,8 +112,9 @@ ReportFilters.prototype.generateReportFile = function(d){
 		type : "POST",
 		data : d,
 		success : function(r){
-			//debugger;
 			Monkeyman.stopLoading();
+			Monkeyman.getOverlay();
+			var downloadFile = new DownloadFile({ container:$("body"),data:{ pathFile:r }});
 		},
 		error : function(error){
 			debugger;
