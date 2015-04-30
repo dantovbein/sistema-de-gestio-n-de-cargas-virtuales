@@ -85,15 +85,18 @@ Main.prototype.getMainView = function() {
 
 	this.getView({ view:Globals.TRANSACTIONS_VIEW, target:$(this.node).find(".btn-transactions") });
 	this.addTopButton();
+	
 }
 
 Main.prototype.getView = function(data) {
-	if(this.currentView != "" && this.currentView == data.view){
+	debugger;
+	if(data.view == "" || this.currentView == data.view){
 		return false;
 	}else{
 		this.currentView = data.view;
 		Utils.removeContent();
 		Monkeyman.highlightButton(data.target,$(this.node).find(".main-nav ul"),"selected");
+		debugger;
 		switch(this.currentView){
 			case Globals.TRANSACTIONS_VIEW:
 				this.view = new TransactionsView({ container:$(this.node).find("#main-content") });

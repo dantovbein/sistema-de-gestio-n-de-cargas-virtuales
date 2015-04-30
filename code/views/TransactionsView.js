@@ -22,6 +22,9 @@ TransactionsView.prototype.getFilters = function() {
 
 TransactionsView.prototype.showDataByFilters = function(data) {
 	$(this.node).find(".wrapper-trxs-list").empty();
+	$(this.node).find(".wrapper-trxs-amount").css({
+		display : "block"
+	});
 	this.trxs = [];
 	data.trxs.forEach(function(t,i){
 		if(this.trxs.length == 0){
@@ -67,9 +70,15 @@ TransactionsView.prototype.showDataByFilters = function(data) {
 }
 
 GenericView.prototype.reset = function() {
-	//$(this.node).find(".wrapper-data-list").empty();
-	//$(this.node).find(".wrapper-trxs-group").empty();	
 	$(this.node).find(".wrapper-trxs-list").empty();
+	/*$(this.node).find(".wrapper-trxs-amount h1").empty();
+	$(this.node).find(".wrapper-trxs-amount h1").empty();
+	$(this.node).find(".wrapper-trxs-amount .trx-detail-amount .item-trx-detail-amount label").empty();
+	$(this.node).find(".wrapper-trxs-amount .trx-detail-amount .item-trx-detail-amount span").empty();*/
+	$(this.node).find(".wrapper-trxs-amount").css({
+		display : "none"
+	});
+	
 }
 
 

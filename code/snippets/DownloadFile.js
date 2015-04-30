@@ -9,7 +9,9 @@ DownloadFile.prototype.constructor = DownloadFile;
 DownloadFile.prototype.initializeParameters = function(){
 	GenericSnippet.prototype.initializeParameters.call(this);
 	this.path = "snippets/downloadFile.html";
+	debugger;
 	this.dataSnippet = [ this.config.data.pathFile ];
+
 }
 
 DownloadFile.prototype.addHandlers = function(){

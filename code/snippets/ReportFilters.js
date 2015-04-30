@@ -105,6 +105,7 @@ ReportFilters.prototype.getTrxsByFilters = function(){
 }
 
 ReportFilters.prototype.generateReportFile = function(d){
+	debugger;
 	$.ajax({
 		context : this,
 		async : false,
@@ -114,6 +115,7 @@ ReportFilters.prototype.generateReportFile = function(d){
 		success : function(r){
 			Monkeyman.stopLoading();
 			Monkeyman.getOverlay();
+
 			var downloadFile = new DownloadFile({ container:$("body"),data:{ pathFile:r }});
 		},
 		error : function(error){
